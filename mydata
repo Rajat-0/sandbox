@@ -1,1 +1,0 @@
-kubeadm join 10.0.0.12:6443 --token clsowd.ldte7vonzb6y4prq --discovery-token-ca-cert-hash sha256:bf1beff1ace9890b7a44ee16164fda2f3d4768c197c626e93751f3a15b2c47c7
