@@ -1,0 +1,107 @@
+---
+- name: start creating kubernetes cluster
+#  command: kubeadm init --pod-network-cidr="{{ stuff.kubernetes.flannel_cidr }}"
+  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  register: kubeadm_init_output
+  changed_when: True
+
+
+- debug:
+    var: kubeadm_init_output
+    verbosity: 2
+  when: inventory_hostname in groups['master']
+
+- name: create /root/.kube directory
+  file:
+    path: /root/.kube
+    state: directory
+    mode: 0755
+  when: inventory_hostname in groups['master']
+
+- name: create config file
+  file:
+    path: /root/.kube/config
+    state: touch
+    mode: 0755
+  when: inventory_hostname in groups['master']
+
+- name: copy admin.conf to root/.kube/config
+  command: cp -rvf /etc/kubernetes/admin.conf /root/.kube/config
+  when: inventory_hostname in groups['master']
+
+- name: set root as owner and group of file /root/.kube/config
+  file:
+    path: /root/.kube/config
+    owner: root
+    group: root
+  when: inventory_hostname in groups['master']
+
+- name:  install the Flannel network
+  command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  register: kube-fannel-setup
+  changed_when: True
+  when: inventory_hostname in groups['master']
+
+- debug:
+    var: kube-fannel-setup
+    verbosity: 2
+  when: inventory_hostname in groups['master']
+
+- name:  Remove Taint of master node for Scheduling pods on master node when cluster vm count is one
+  command: kubectl taint nodes --all node-role.kubernetes.io/master-
+  when:  stuff.openstack.count == 1
+
+- name:  kubeadm join output
+  command: kubeadm token create --print-join-command
+  register: kubejointoken
+  changed_when: True
+  when: stuff.openstack.count > 1
+ 
+- name: create mydata file
+  file:
+    path: /root/.kube/mydata
+    state: touch
+    mode: 0755
+  when: stuff.openstack.count > 1
+
+- name: copy var kubejointoken output to a file
+  copy:
+    content: "{{ kubejointoken.stdout }}\n\r"
+    dest: "/root/.kube/mydata"
+    mode: "0755"
+  when: stuff.openstack.count > 1
+
+- fetch:
+    src: /root/.kube/mydata
+    dest: ./mydata
+    flat: true
+  when: stuff.openstack.count > 1
+
+- debug:
+    var: kubejointoken.stdout
+    verbosity: 2
+  changed_when: True
+  when: stuff.openstack.count > 1
+
+- debug:
+    var: kubejointoken1
+    verbosity: 2
+  when: stuff.openstack.count > 1
+
+- name: Download file kubernetes-dashboard.yaml from kubernetes offical link
+  get_url:
+    url: https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+    dest: /tmp/kubernetes-dashboard.yaml
+
+- name: add type NodePort to kubernetes-dashboard.yaml for accesing dashboard from workerIP+nodeport
+  lineinfile:
+    path: /tmp/kubernetes-dashboard.yaml
+#    regexp: '^Listen '
+    insertafter: 'targetPort: 8443'
+    line: '  type: NodePort'
+
+- name:  install kubernetes-dashboard 
+  command: kubectl apply -f /tmp/kubernetes-dashboard.yaml
+  register: kubedashboard
+  changed_when: True
+

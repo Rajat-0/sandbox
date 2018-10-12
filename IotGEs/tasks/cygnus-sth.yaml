@@ -1,0 +1,13 @@
+---
+# tasks file
+- name: copying cygnus-sth package directory to file with owner and permissions
+  copy:
+    src: ./IoTGEs-templates/cygnus-sth
+    dest: /root/IotGEs/
+    owner: root
+    group: root
+    mode: 0755
+
+- name:  install cyhnus_sth GE
+  command: bash /root/IotGEs/cygnus-sth/cyhnus_sth_oneclick.sh
+  changed_when: True

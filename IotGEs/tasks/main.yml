@@ -1,0 +1,6 @@
+---
+# tasks file for IotGEs
+- include: orion.yaml
+- include: cygnus-sth.yaml
+- include: sth-comet.yaml
+- include: cepheus.yaml

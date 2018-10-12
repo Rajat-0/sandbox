@@ -1,0 +1,18 @@
+---
+# tasks file for kubernetes-post-deploy
+- name:  check all namespace services are running
+  command: kubectl get pods --all-namespaces
+  register: kubectlgetpods
+
+- debug:
+    var: kubectlgetpods
+    verbosity: 2
+
+- name:  list kubernetes nodes
+  command: kubectl get nodes
+  register: kubectlnodes
+
+- debug:
+    var: kubectlnodes
+    verbosity: 2
+

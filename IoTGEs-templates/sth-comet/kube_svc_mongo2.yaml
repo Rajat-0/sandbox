@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongo2
+spec:
+#  clusterIP: None
+#  ports:
+#  - name: headless
+#    port: 27
+#    targetPort: 0
+  selector:
+    app: mongo2
+#status:
+#  loadBalancer: {}
+#  selector:
+#    app: mongodb
+#  type: NodePort
+#  externalIPs:
+#    - 195.134.187.35
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017

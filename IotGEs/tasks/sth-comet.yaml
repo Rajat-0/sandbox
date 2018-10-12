@@ -1,0 +1,13 @@
+---
+# tasks file
+- name: copying cygnus-sth package directory to file with owner and permissions
+  copy:
+    src: ./IoTGEs-templates/sth-comet
+    dest: /root/IotGEs/
+    owner: root
+    group: root
+    mode: 0755
+
+- name:  install sth-comet GE
+  command: bash /root/IotGEs/sth-comet/sth-comet_oneclick.sh
+  changed_when: True

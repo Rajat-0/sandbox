@@ -1,0 +1,18 @@
+---
+# tasks file for worker
+- name: example copying file with owner and permissions
+  copy:
+    src: mydata
+    dest: /root/mydata
+    owner: root
+    group: root
+    mode: 0755
+  when: inventory_hostname in groups['worker']
+  
+
+
+- name:  run kubeadm join to add workers in cluster 
+  command: "{{ user_data }}"
+  register: kubejointoken1
+  changed_when: True
+  when: inventory_hostname in groups['worker']

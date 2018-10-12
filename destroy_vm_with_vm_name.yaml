@@ -1,0 +1,13 @@
+- name: Destroy VM on OpenStack
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Destroy an instance assuming vm name already present in cloud.
+      os_server:
+              name: "{{ item }}"
+              state: absent
+      with_items:
+        - kube1
+        - kube2
+        - kube3
+        - kube4

@@ -1,0 +1,17 @@
+---
+# tasks file
+- name: copying orion package directory to file with owner and permissions
+  copy:
+    src: ./IoTGEs-templates/orion
+    dest: /root/IotGEs/
+    owner: root
+    group: root
+    mode: 0755
+
+- name:  run nfs-server on kubernetes master
+  command: bash /root/IotGEs/orion/nfs-master.sh
+  changed_when: True
+
+- name:  install orion GE
+  command: bash /root/IotGEs/orion/orion_one_click.sh
+  changed_when: True

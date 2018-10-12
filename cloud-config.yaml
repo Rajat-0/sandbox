@@ -1,0 +1,17 @@
+#cloud-config
+# vim: syntax=yaml
+---
+openstack: 
+  master:
+    name: kube3
+  worker:
+    name: kube4
+  key_name: yadav2 
+  flavor: m1.large
+  private_network: demo-net
+  external_network: ext-net
+  image: centos7.5
+  security_groups: sandbox_kube
+  count: 3
+kubernetes:
+  flannel_cidr: 10.244.0.0/16

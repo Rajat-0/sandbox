@@ -1,0 +1,17 @@
+[kubernetes:children]
+master
+worker
+
+[master]
+#180.179.214.219
+192.168.20.53
+
+[worker]
+#180.179.214.186
+192.168.20.58
+
+[kubernetes:vars]
+ansible_ssh_user=centos
+ansible_become=True
+ansible_become_user=root
+ansible_private_key_file=/home/necuser/Desktop/yadav2.pem

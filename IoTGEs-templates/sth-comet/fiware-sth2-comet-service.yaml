@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sth22
+  name: fiware-sth-comet2
+spec:
+  type: NodePort
+  ports:
+  - name: "8666"
+    port: 8666
+    targetPort: 8666
+    nodePort: 32568
+  selector:
+    app: sth22
+status:
+  loadBalancer: {}

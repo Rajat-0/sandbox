@@ -1,0 +1,76 @@
+---
+- name: include_vars
+  hosts: localhost
+  tasks:
+    - name: include_vars
+      include_vars:
+        file: cloud-config.yaml
+        name: stuff
+
+- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+  gather_facts: true
+  hosts:
+    - localhost
+  roles:
+    - role: vm-deploy
+
+- name: include_vars
+  hosts: kubernetes
+  tasks:
+    - name: include_vars
+      include_vars:
+        file: cloud-config.yaml
+        name: stuff
+
+- name: Apply  kubernetes-common role for common tasks
+  gather_facts: true
+  become: True
+  hosts:
+    - kubernetes
+  roles:
+    - role: kubernetes-common
+#      when: kolla_action == "precheck"
+
+- name: Apply kubernetes master role for kubernetes master tasks
+  gather_facts: true
+  become: True
+  hosts:
+    - master
+  vars:
+    vm_count: "{{ stuff.openstack.count }}"
+  roles:
+    - role: master
+#      when: kolla_action == "precheck"
+
+
+- name: Apply kubernetes worker role for kubernetes worker tasks
+  gather_facts: true
+  become: True
+  hosts:
+    - worker
+  roles:
+    - role: worker
+      when: stuff.openstack.count > 1
+#      when: kolla_action == "precheck"
+
+- name: Apply kubernetes-post-deploy role for kubernetes post deploy check
+  gather_facts: true
+  become: True
+  hosts:
+    - master
+  roles:
+    - role: kubernetes-post-deploy
+
+- name: install IoTGEs
+  gather_facts: true
+  become: True
+  hosts:
+    - master
+  roles:
+    - role: IotGEs
+
+#- name: Destroy VM on OpenStack
+#  hosts: localhost
+#  gather_facts: false
+#  roles:
+#    - role: vm-destroy

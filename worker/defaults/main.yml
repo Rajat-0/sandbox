@@ -1,0 +1,4 @@
+---
+# defaults file for worker
+user_data: "{{ lookup('file', './mydata' ) }}"
+count : "{{ stuff.openstack.count }}"

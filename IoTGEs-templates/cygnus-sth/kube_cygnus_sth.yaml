@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: cygnus-sth
+spec:
+  replicas: 2
+  selector:
+    app: cygnus-sth
+  template:
+    metadata:
+      name: cygnus-sth
+      labels:
+        app: cygnus-sth
+    spec:
+      containers:
+      - name: cygnus-sth
+        image: rhcayadav/cygnus_custom-comet_with_entrypoint:v2.004
+#        args:
+#        - -dbhost
+#        - mongo-client2.default.svc.cluster.local
+        ports:
+        - containerPort: 5050
+        - containerPort: 8081
+        resources: {}
+      restartPolicy: Always
+
