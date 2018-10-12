@@ -9,9 +9,9 @@
     mode: 0755
 
 - name:  run nfs-server on kubernetes master
-  command: bash /root/IotGEs/orion/nfs-master.sh
+  command: chdir=/root/IotGEs/orion ./nfs-master.sh
   changed_when: True
 
 - name:  install orion GE
-  command: bash /root/IotGEs/orion/orion_one_click.sh
+  command: chdir=/root/IotGEs/orion ./orion_one_click.sh
   changed_when: True

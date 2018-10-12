@@ -36,8 +36,6 @@
   become: True
   hosts:
     - master
-  vars:
-    vm_count: "{{ stuff.openstack.count }}"
   roles:
     - role: master
 #      when: kolla_action == "precheck"
