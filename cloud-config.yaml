@@ -12,6 +12,7 @@ openstack:
   external_network: ext-net
   image: centos7.5
   security_groups: sandbox_kube
+  key_path:
   count: 3
 kubernetes:
   flannel_cidr: 10.244.0.0/16

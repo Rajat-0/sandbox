@@ -43,18 +43,18 @@
             ansible_ssh_user=centos
             ansible_become=True
             ansible_become_user=root
-            ansible_private_key_file=/home/necuser/Desktop/yadav2.pem
+            ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[:1] }}"
   when: stuff.openstack.count > 1
 
 - name: add_host to run time inventory for kubernetes group
   add_host: name={{ item.server.public_v4 }}
-            groups=kubernetes
+            groups=kubernetes={{ stuff.openstack.key_path}}
             instance_name={{ item.server.name }}
             ansible_ssh_user=centos
             ansible_become=True
             ansible_become_user=root
-            ansible_private_key_file=/home/necuser/Desktop/yadav2.pem
+            ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results }}"
   when: stuff.openstack.count > 1
 
@@ -65,7 +65,7 @@
             ansible_ssh_user=centos
             ansible_become=True
             ansible_become_user=root
-            ansible_private_key_file=/home/necuser/Desktop/yadav2.pem
+            ansible_private_key_file="{{ stuff.openstack.key_path}}"
   with_items: "{{ openstackvmcreate.results[1:] }}"
   when: stuff.openstack.count > 1
 
@@ -79,7 +79,7 @@
     ansible_ssh_user: centos
     ansible_become: True
     ansible_become_user: root
-    ansible_private_key_file: /home/necuser/Desktop/yadav2.pem
+    ansible_private_key_file: {{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results }}"
   when: stuff.openstack.count == 1
 
