@@ -18,4 +18,6 @@ sleep 10
 kubectl create -f ./kube_orion_depoyment.yaml
 sleep 10
 echo "++++++++++orion oneclick soln completed+++++++++++"
-
+echo "=================checking if orion is up and running======================"
+curl 192.168.20.63:32101/version
+echo "======================================="

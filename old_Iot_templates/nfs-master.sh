@@ -1,5 +1,5 @@
 # SSH into the Kubernetes master and run the following command
-yum install  nfs-utils rpcbind -y
+yum install nfs-server -y
 mkdir -p /opt/data
 chmod 777 /opt/data
 echo "/opt/data *(rw,sync,no_root_squash,no_all_squash)"  >> /etc/exports

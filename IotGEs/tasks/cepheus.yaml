@@ -10,4 +10,7 @@
 
 - name:  install sth-comet GE
   command: chdir=/root/IotGEs/cepheus ./cepheus_oneclick.sh
+  shell: ./cepheus_oneclick.sh
+  args:
+    chdir: /root/IotGEs/cepheus
   changed_when: True

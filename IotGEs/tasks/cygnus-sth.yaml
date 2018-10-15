@@ -9,5 +9,7 @@
     mode: 0755
 
 - name:  install cyhnus_sth GE
-  command: chdir=/root/IotGEs/cygnus-sth ./cyhnus_sth_oneclick.sh
+  shell: ./cyhnus_sth_oneclick.sh
+  args:
+    chdir: /root/IotGEs/cygnus-sth
   changed_when: True

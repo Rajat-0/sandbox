@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cygnus-sth
+    app: cygnus-sth
+  name: cygnus-sth
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: cygnus-sth
+        app: cygnus-sth
+    spec:
+      containers:      
+      - image: rhcayadav/cygnus_custom-comet_with_entrypoint:v2.004
+        name: cygnus-sth
+        ports:
+        - containerPort: 5050
+        - containerPort: 8081
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,12 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.16.0 (0c01309)
-  creationTimestamp: null
   labels:
-    io.kompose.service: fiware-sth-comet2
     app: sth22
   name: fiware-sth-comet2
 spec:
@@ -14,9 +9,7 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: fiware-sth-comet2
         app: sth22
     spec:
       containers:

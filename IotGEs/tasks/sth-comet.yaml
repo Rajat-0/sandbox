@@ -9,5 +9,7 @@
     mode: 0755
 
 - name:  install sth-comet GE
-  command: chdir=/root/IotGEs/sth-comet ./sth-comet_oneclick.sh
+  shell: ./sth-comet_oneclick.sh
+  args:
+    chdir: /root/IotGEs/sth-comet
   changed_when: True
