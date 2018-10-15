@@ -13,6 +13,7 @@ git clone https://github.com/rhcayadav/sandbox.git
 
 
 step 3: Run prerequisite.sh for installing prerequisite envirment setup.
+
 cd sandbox
 chmod +x prerequisite.sh
 ./prerequisite.sh
