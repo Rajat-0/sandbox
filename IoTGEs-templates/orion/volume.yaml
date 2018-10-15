@@ -1,19 +1,21 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mongo-pv0
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
-  nfs:
-    path: /opt/data/vol/0
-    server: ${HOSTNAME}
+- k8s_raw:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: mongo-pv0
+      spec:
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteMany
+        persistentVolumeReclaimPolicy: Recycle
+        nfs:
+          path: /opt/data/vol/0
+          server: {{ ansible_default_ipv4.address }}
 
 ---
-
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -26,20 +28,22 @@ spec:
       storage: 1Gi
 
 ---
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mongo-pv1
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
-  nfs:
-    path: /opt/data/vol/1
-    server: ${HOSTNAME}
+- k8s_raw:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: mongo-pv1
+      spec:
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteMany
+        persistentVolumeReclaimPolicy: Recycle
+        nfs:
+          path: /opt/data/vol/1
+          server: {{ ansible_default_ipv4.address }}
 
 ---
 
@@ -55,20 +59,22 @@ spec:
       storage: 1Gi
 
 ---
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mongo-pv2
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
-  nfs:
-    path: /opt/data/vol/2
-    server: ${HOSTNAME}
+- k8s_raw:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolume
+      metadata:
+        name: mongo-pv2
+      spec:
+        capacity:
+          storage: 1Gi
+        accessModes:
+          - ReadWriteMany
+        persistentVolumeReclaimPolicy: Recycle
+        nfs:
+          path: /opt/data/vol/2
+          server: {{ ansible_default_ipv4.address }}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

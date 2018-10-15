@@ -6,7 +6,7 @@
 - name: Deploy an instance assuming image, network(public/private), flavor and  key are already present in cloud.
   os_server:
     state: present
-    name: "kube0{{ item }}"
+    name: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
     key_name: "{{ stuff.openstack.key_name}}"
     image: "{{ stuff.openstack.image}}"
     wait: yes
@@ -22,7 +22,7 @@
 - os_floating_ip:
     state: present
     reuse: yes
-    server: "kube0{{ item }}"
+    server: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
     network: "{{ stuff.openstack.external_network}}"
     wait: true
   with_sequence:
@@ -49,7 +49,7 @@
 
 - name: add_host to run time inventory for kubernetes group
   add_host: name={{ item.server.public_v4 }}
-            groups=kubernetes={{ stuff.openstack.key_path}}
+            groups=kubernetes
             instance_name={{ item.server.name }}
             ansible_ssh_user=centos
             ansible_become=True
@@ -65,7 +65,7 @@
             ansible_ssh_user=centos
             ansible_become=True
             ansible_become_user=root
-            ansible_private_key_file="{{ stuff.openstack.key_path}}"
+            ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[1:] }}"
   when: stuff.openstack.count > 1
 

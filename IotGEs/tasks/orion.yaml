@@ -8,6 +8,25 @@
     group: root
     mode: 0755
 
+- name: add nfs server ip to pv
+  lineinfile:
+    path: /root/IotGEs/orion/volume1.yaml
+    insertafter: '  nfs:'
+    line: '    server: {{ ansible_default_ipv4.address }}'
+
+- name: add nfs server ip to pv
+  lineinfile:
+    path: /root/IotGEs/orion/volume2.yaml
+    insertafter: '  nfs:'
+    line: '    server: {{ ansible_default_ipv4.address }}'
+
+- name: add nfs server ip to pv
+  lineinfile:
+    path: /root/IotGEs/orion/volume3.yaml
+    insertafter: '  nfs:'
+    line: '    server: {{ ansible_default_ipv4.address }}'
+
+
 - name:  run nfs-server on kubernetes master
   shell: ./nfs-master.sh
   args:

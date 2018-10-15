@@ -1,1 +1,1 @@
-kubeadm join 10.0.0.13:6443 --token stll2p.d1knigqu746l5pcw --discovery-token-ca-cert-hash sha256:3078df371e6691715462ad2ea2374798a1833232bf084de805cbd791ea765044
+kubeadm join 10.0.0.18:6443 --token v0lj74.8otpfzgzhdlte1ee --discovery-token-ca-cert-hash sha256:4563acd7dcfe946a6b7a98442b1879b5e62c9af6712a420bd03486819b6a9c47

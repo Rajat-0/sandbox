@@ -1,4 +1,17 @@
 ---
+- name: create myip.sh file
+  file:
+    path: /etc/profile.d/myip.sh
+    state: touch
+    mode: 0777
+
+- lineinfile:
+    path: /etc/profile.d/myip.sh
+    line: 'export master_ip="{{ ansible_default_ipv4.address }}"'
+    owner: root
+    group: root
+    mode: 0777
+
 - name: start creating kubernetes cluster
 #  command: kubeadm init --pod-network-cidr="{{ stuff.kubernetes.flannel_cidr }}"
   command: kubeadm init --pod-network-cidr=10.244.0.0/16
