@@ -79,7 +79,7 @@
     ansible_ssh_user: centos
     ansible_become: True
     ansible_become_user: root
-    ansible_private_key_file: {{ stuff.openstack.key_path}}
+    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
   with_items: "{{ openstackvmcreate.results }}"
   when: stuff.openstack.count == 1
 
