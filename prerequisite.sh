@@ -1,6 +1,7 @@
 yum install epel-release -y
+yum install ansible -y
 yum install python-pip -y
-pip install ansible
+pip install -U ansible
 pip install shade
 echo "+++++++++++++++please source your openstack auth/rc file here+++++++++++++"
 sed -i '/host_key_checking = False/s/^#//g' /etc/ansible/ansible.cfg
