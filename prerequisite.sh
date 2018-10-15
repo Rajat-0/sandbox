@@ -1,3 +1,4 @@
+yum install epel-release -y
 yum install python-pip -y
 pip install ansible
 pip install shade
