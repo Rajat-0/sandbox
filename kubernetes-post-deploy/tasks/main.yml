@@ -16,3 +16,62 @@
     var: kubectlnodes
     verbosity: 2
 
+- name: copying orion package directory to file with owner and permissions
+  copy:
+    src: ./plateform-templates/admin-service-account.yaml
+    dest: /root/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create admin account user and role
+  command: kubectl create -f /root/admin-service-account.yaml
+
+- name: copying admin-secret.sh
+  copy:
+    src: ./plateform-templates/admin-secret.sh
+    dest: /root/
+    owner: root
+    group: root
+    mode: 0755
+
+- name:  run admin-secret.sh on kubernetes master
+  shell: ./admin-secret.sh
+  args:
+    chdir: /root/
+  changed_when: True
+  register: admindetails
+
+- set_fact:
+    admin_token: "{{ admindetails.stdout_lines | last }}"
+
+- name:  list kube svc 
+  command:  kubectl describe  svc kubernetes-dashboard --namespace kube-system
+  register: dashboardport
+
+- set_fact:
+    dashboard_port: "{{ dashboardport.stdout_lines[10].split(':')[1].split(' ')[::-1][0].split('/')[0] }}"
+
+- name: create mydata file
+  file:
+    path: /root/dashboard_rc.txt
+    state: touch
+    mode: 0755
+
+- name: fill user dashboard details to a text file.
+  blockinfile:
+    path: /root/dashboard_rc.txt
+    marker: "<!-- {mark} ANSIBLE GENRATED dashboard details file -->"
+    content: |
+      kubernetes dashboard is on  https://{{groups['worker'][0]}}:{{ dashboard_port }}   and 
+      {{ admin_token }}
+
+- fetch:
+    src: /root/dashboard_rc.txt
+    dest: ./dashboard_rc.txt
+    flat: true
+
+
+
+
+

@@ -4,7 +4,7 @@
 openstack:
   vm_name_prefix: yadav
   key_name: yadav2 
-  flavor: m1.large
+  flavor: m1.medium
   private_network: demo-net
   external_network: ext-net
   image: centos7.5
@@ -13,3 +13,8 @@ openstack:
   count: 3
 kubernetes:
   flannel_cidr: 10.244.0.0/16
+
+enable_orion: "no"
+enable_sth_comet: "no"
+enable_cygnus_sth: "no"
+enable_cepheus: "no"

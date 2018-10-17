@@ -36,7 +36,7 @@
     marker: "# {mark} ANSIBLE GENERATED HOSTS"
     block: |
         {% for host in groups['kubernetes'] %}
-        {{ ansible_default_ipv4.address }} {{ hostvars[host]['ansible_hostname']+".novalocal " + hostvars[host]['ansible_hostname'] }}
+        {{ hostvars[host]['ansible_default_ipv4']['address'] }} {{ hostvars[host]['ansible_hostname']+".novalocal " + hostvars[host]['ansible_hostname'] }}
         {% endfor %}
   become: True
 

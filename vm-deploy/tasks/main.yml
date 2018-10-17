@@ -24,7 +24,7 @@
     reuse: yes
     server: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
     network: "{{ stuff.openstack.external_network}}"
-    wait: true
+    wait: True
   with_sequence:
     count={{ stuff.openstack.count }}
   register: openstackfip
@@ -82,6 +82,3 @@
     ansible_private_key_file: "{{ stuff.openstack.key_path}}"
   with_items: "{{ openstackvmcreate.results }}"
   when: stuff.openstack.count == 1
-
-
-

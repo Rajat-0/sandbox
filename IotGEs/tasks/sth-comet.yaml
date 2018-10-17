@@ -1,6 +1,6 @@
 ---
 # tasks file
-- name: copying cygnus-sth package directory to file with owner and permissions
+- name: copying sth-comet package directory to file with owner and permissions
   copy:
     src: ./IoTGEs-templates/sth-comet
     dest: /root/IotGEs/

@@ -1,6 +1,18 @@
 ---
 # tasks file for IotGEs
 - include: orion.yaml
-- include: cygnus-sth.yaml
+  when:
+    - stuff.enable_orion | bool
+
 - include: sth-comet.yaml
+  when:
+    - stuff.enable_sth_comet | bool
+
+- include: cygnus-sth.yaml
+  when:
+    - stuff.enable_cygnus_sth | bool
+    - stuff.enable_sth_comet | bool
+
 - include: cepheus.yaml
+  when:
+    - stuff.enable_cepheus | bool

@@ -13,8 +13,8 @@
     mode: 0777
 
 - name: start creating kubernetes cluster
-#  command: kubeadm init --pod-network-cidr="{{ stuff.kubernetes.flannel_cidr }}"
-  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  command: kubeadm init --pod-network-cidr="{{ stuff.kubernetes.flannel_cidr }}"
+#  command: kubeadm init --pod-network-cidr=10.244.0.0/16
   register: kubeadm_init_output
   changed_when: True
 

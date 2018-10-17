@@ -1,6 +1,6 @@
 ---
 # tasks file
-- name: copying cygnus-sth package directory to file with owner and permissions
+- name: copying cepheus package directory to file with owner and permissions
   copy:
     src: ./IoTGEs-templates/cepheus
     dest: /root/IotGEs/
@@ -8,7 +8,7 @@
     group: root
     mode: 0755
 
-- name:  install sth-comet GE
+- name:  install cepheus GE
   shell: ./cepheus_oneclick.sh
   args:
     chdir: /root/IotGEs/cepheus
