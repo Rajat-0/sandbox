@@ -3,10 +3,6 @@
 - name:  check all namespace services are running
   command: kubectl get pods --all-namespaces
   register: kubectlgetpods
-  failed_when:
-    - kubectlgetpods.rc != 0
-  delay: 10
-  changed_when: False
 
 - debug:
     msg: "{{ kubectlgetpods }}"
@@ -15,9 +11,9 @@
 - name:  list kubernetes nodes
   command: kubectl get nodes
   register: kubectlnodes
-  failed_when:
-    - kubectlgetpods.rc != 0
-  changed_when: False
+  until: kubectlnodes.stdout.find("NotReady") != 0
+  retries: 100
+  delay: 3
 
 - debug:
     msg: "{{ kubectlnodes }}"
@@ -60,7 +56,7 @@
 - set_fact:
     admin_token: "{{ admindetails.stdout_lines | last }}"
 
-- name:  list kube svc 
+- name:  list kube svc and grep dashboard svc
   command:  kubectl describe  svc kubernetes-dashboard --namespace kube-system
   register: dashboardport
   failed_when:

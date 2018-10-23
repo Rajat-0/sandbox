@@ -116,7 +116,6 @@
     url: https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
     dest: /tmp/kubernetes-dashboard.yaml
   register: kubernetes_dashboard_yaml
-  changed_when: False
 
 - name: add type NodePort to kubernetes-dashboard.yaml for accesing dashboard from workerIP+nodeport
   lineinfile:
@@ -124,13 +123,11 @@
     insertafter: 'targetPort: 8443'
     line: '  type: NodePort'
   register: kubernetes_dashboard_yaml_addnodeport
-  when: kubernetes_dashboard_yaml.changed
   changed_when: False
 
 - name:  install kubernetes-dashboard 
   command: kubectl apply -f /tmp/kubernetes-dashboard.yaml
   register: kube_dashboard_install
-  when: kubernetes_dashboard_yaml_addnodeport.changed
   changed_when: False
   failed_when:
     - kube_dashboard_install.rc != 0
