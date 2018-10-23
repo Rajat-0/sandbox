@@ -10,11 +10,6 @@
   register: fatching_mydata_file
   changed_when: False
 
-- name:  list kubernetes nodes
-  command: kubectl get nodes
-  register: before_existing_nodes1
-  ignore_errors: yes
-
 - name:  run kubeadm join to add workers in cluster
   command: "{{ user_data }}"
   register: kubejointoken1

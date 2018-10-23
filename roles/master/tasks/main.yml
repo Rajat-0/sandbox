@@ -137,3 +137,8 @@
   register: kube_dashboard_install
   failed_when:
     - kube_dashboard_install.rc != 0
+
+- name:  list kubernetes nodes
+  command: kubectl get nodes
+  register: before_existing_nodes1
+  ignore_errors: yes
