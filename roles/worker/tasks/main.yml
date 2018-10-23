@@ -13,6 +13,8 @@
   command: kubectl get nodes
   register: before_existing_nodes1
   ignore_errors: yes
+  runonce: True
+  delegate_to: "{{ groups['worker'][0] }}"
 
 - name:  run kubeadm join to add workers in cluster
   command: "{{ user_data }}"
@@ -22,7 +24,7 @@
   failed_when:
     - kubejointoken1.rc != 0
   when:
-  - "hostvars[host]['ansible_hostname'] not in before_existing_nodes1.stdout"
+  - "ansible_hostname not in before_existing_nodes1.stdout"
 
 - debug:
     msg: "{{ kubejointoken1 }}"
