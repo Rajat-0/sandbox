@@ -10,14 +10,13 @@
 
 - name:  list kubernetes nodes
   command: kubectl get nodes
-  register: kubectlnodes
-  until: kubectlnodes.stdout.find(" Ready") != -1
+  register: kubectlnodes1
+  until: kubectlnodes1.stdout.find(" Ready") != -1
   retries: 100
   delay: 3
 
 - debug:
-    msg: "{{ kubectlnodes }}"
-  changed_when: False
+    msg: "{{ kubectlnodes1 }}"
 
 - name: copying orion package directory to file with owner and permissions
   copy:
@@ -26,7 +25,7 @@
     owner: root
     group: root
     mode: 0755
-  changed_when: False
+
 
 - name: create admin account user and role
   command: kubectl create -f /tmp/admin-service-account.yaml
@@ -42,7 +41,6 @@
     owner: root
     group: root
     mode: 0755
-  changed_when: False
 
 - name:  run admin-secret.sh on kubernetes master
   shell: ./admin-secret.sh
@@ -51,7 +49,6 @@
   register: admindetails
   failed_when:
     - admindetails.rc != 0
-  changed_when: False
 
 - set_fact:
     admin_token: "{{ admindetails.stdout_lines | last }}"
@@ -61,15 +58,13 @@
   register: dashboardport
   failed_when:
     - dashboardport.rc != 0
-  changed_when: False
+
 
 - debug:
     msg: "{{ dashboardport }}"
-  changed_when: False
 
 - set_fact:
     dashboard_port: "{{ dashboardport.stdout_lines[10].split(':')[1].split(' ')[::-1][0].split('/')[0] }}"
-  changed_when: False
 
 - name: create dashboard_rc.txt file
   file:
@@ -77,7 +72,6 @@
     state: touch
     mode: 0755
   register: dashboard_rc
-  changed_when: False
 
 - name: fill user dashboard details to a text file.
   blockinfile:
@@ -87,17 +81,12 @@
       kubernetes dashboard is on  https://{{groups['worker'][0]}}:{{ dashboard_port }}   and 
       {{ admin_token }}
   register: dashboard_details_to_file
-  changed_when: False
-  when:
-  - dashboard_rc.changed
 
 - fetch:
     src: /tmp/dashboard_rc.txt
     dest: ./dashboard_rc.txt
     flat: true
-  when:
-  - dashboard_details_to_file.changed
-  changed_when: False
+
 
 
 
