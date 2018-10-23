@@ -9,7 +9,7 @@
     reuse: yes
     server: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
     network: "{{ stuff.openstack.external_network}}"
-    wait: False
+    wait: True
   with_sequence:
     count={{ stuff.openstack.count }}
   register: openstackfip
@@ -24,14 +24,6 @@
   delay: 2
 
 - include: vm_create.yaml
-
-
-# - name: copy var openstackvmcreate output to a file
-#   copy:
-#     content: "{{ openstackvmcreate.results }}\n\r"
-#     dest: "mydata3"
-#     mode: "0755"
-
 
 - name: add_host to run time inventory for master group
   add_host: name={{ item.server.public_v4 }}
