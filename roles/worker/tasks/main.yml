@@ -22,7 +22,7 @@
   failed_when:
     - kubejointoken1.rc != 0
   when:
-  - "groups['worker'][-1] not in before_existing_nodes1.stdout"
+  - "hostvars[host]['ansible_hostname'] not in before_existing_nodes1.stdout"
 
 - debug:
     msg: "{{ kubejointoken1 }}"
