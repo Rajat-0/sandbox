@@ -23,4 +23,13 @@ enable_cepheus: "no"
 
 NGB:
   enable_ngb: "yes"
+  vm_name_prefix: NGB
+  key_name: yadav2
+  flavor: m1.medium
+  private_network: demo-net
+  external_network: ext-net
+  image: ubuntu_18.04
+  security_groups: sandbox_kube
+  key_path: /root/yadav/yadav.pem
+  count: 1
 
