@@ -3,7 +3,7 @@
 ---
 openstack:
   vm_name_prefix: yadav
-  key_name: yadav2 
+  key_name: yadav2
   flavor: m1.medium
   private_network: demo-net
   external_network: ext-net
@@ -12,9 +12,15 @@ openstack:
   key_path: /root/yadav/yadav.pem
   count: 3
 kubernetes:
+  enable_kubernetes: "no"
   flannel_cidr: 10.244.0.0/16
 
+enable_IotGEs: "no"
 enable_orion: "no"
 enable_sth_comet: "no"
 enable_cygnus_sth: "no"
 enable_cepheus: "no"
+
+NGB:
+  enable_ngb: "yes"
+

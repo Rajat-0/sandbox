@@ -13,6 +13,8 @@
   hosts: localhost
   roles:
     - role: vm-deploy
+      when:
+        - stuff.kubernetes.enable_kubernetes  | bool
 
 - name: include_vars
   hosts: kubernetes
@@ -22,6 +24,8 @@
         file: cloud-config.yaml
         name: stuff
       changed_when: True
+      when:
+        - stuff.kubernetes.enable_kubernetes  | bool
 
 - name: Apply  kubernetes-common role for common tasks
   gather_facts: true
@@ -30,6 +34,8 @@
     - kubernetes
   roles:
     - role: kubernetes-common
+      when:
+        - stuff.kubernetes.enable_kubernetes  | bool
 #      when: kolla_action == "precheck"
 
 - name: Apply kubernetes master role for kubernetes master tasks
@@ -39,6 +45,8 @@
     - master
   roles:
     - role: master
+      when:
+        - stuff.kubernetes.enable_kubernetes  | bool
 #      when: kolla_action == "precheck"
 
 
@@ -49,7 +57,9 @@
     - worker
   roles:
     - role: worker
-      when: stuff.openstack.count > 1
+      when:
+        - stuff.openstack.count > 1
+        - stuff.kubernetes.enable_kubernetes  | bool
 #      when: kolla_action == "precheck"
 
 - name: Apply kubernetes-post-deploy role for kubernetes post deploy check
@@ -67,7 +77,35 @@
     - master
   roles:
     - role: IotGEs
+      when:
+        - stuff.enable_IotGEs  | bool
 
+
+- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+  gather_facts: true
+  hosts: localhost
+  roles:
+    - role: NGB
+      when:
+        - stuff.NGB.enable_ngb | bool
+
+- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+  gather_facts: true
+  hosts: localhost
+  roles:
+    - role: ngb-vm-deploy
+      when:
+        - stuff.NGB.enable_ngb  | bool
+
+- name: Apply kubernetes master role for kubernetes master tasks
+  gather_facts: true
+  become: True
+  hosts:
+    - NGB
+  roles:
+    - role: NGB
+      when:
+        - stuff.NGB.enable_ngb  | bool
 #- name: Destroy VM on OpenStack
 #  hosts: localhost
 #  gather_facts: false

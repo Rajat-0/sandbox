@@ -1,0 +1,46 @@
+---
+# tasks file for ngb-vm-deploy
+- include: vm_create.yaml
+
+- os_floating_ip:
+    state: present
+    reuse: yes
+    server: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
+    network: "{{ stuff.openstack.external_network}}"
+    wait: True
+  with_sequence:
+    count={{ stuff.openstack.count }}
+  register: openstackfip
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    centos@{{openstackfip.results[-1].floating_ip.floating_ip_address}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 2
+
+- include: vm_create.yaml
+
+- name: if count is 1 than add that host to all groups
+  add_host:
+    name: "{{ item.server.public_v4 }}"
+    groups:
+      - NGB
+    instance_name: "{{ item.server.name }}"
+    ansible_ssh_user: centos
+    ansible_become: True
+    ansible_become_user: root
+    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
+  with_items: "{{ openstackvmcreate.results }}"
+  when: stuff.openstack.count == 1
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    centos@{{groups['NGB'][-1]}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 3
