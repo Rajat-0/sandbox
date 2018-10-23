@@ -19,7 +19,6 @@
 - name:  run kubeadm join to add workers in cluster
   command: "{{ user_data }}"
   register: kubejointoken1
-  when: fatching_mydata_file.changed
   changed_when: False
   failed_when:
     - kubejointoken1.rc != 0
