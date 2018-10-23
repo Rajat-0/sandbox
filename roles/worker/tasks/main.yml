@@ -8,6 +8,7 @@
     group: root
     mode: 0755
   register: fatching_mydata_file
+  changed_when: False
 
 - name:  list kubernetes nodes
   command: kubectl get nodes
@@ -21,7 +22,7 @@
   failed_when:
     - kubejointoken1.rc != 0
   when:
-  - "ansible_hostname not in before_existing_nodes1.stdout"
+  - ansible_hostname not in before_existing_nodes1.stdout
 
 - debug:
     msg: "{{ kubejointoken1 }}"
