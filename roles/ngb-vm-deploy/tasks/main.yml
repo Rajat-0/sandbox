@@ -30,8 +30,8 @@
       - NGB
     instance_name: "{{ item.server.name }}"
     ansible_ssh_user: ubuntu
-    ansible_become: True
-    ansible_become_user: root
+    #ansible_become: True
+    #ansible_become_user: root
     ansible_private_key_file: "{{ stuff.NGB.key_path}}"
   with_items: "{{ NGBvmcreate.results }}"
   when: stuff.NGB.count == 1

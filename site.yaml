@@ -81,25 +81,30 @@
         - stuff.enable_IotGEs  | bool
 
 
-- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
-  gather_facts: true
-  hosts: localhost
-  roles:
-    - role: NGB
+- name: include_vars
+  hosts: NGB
+  tasks:
+    - name: include_vars
+      include_vars:
+        file: cloud-config.yaml
+        name: stuff
+      changed_when: True
       when:
-        - stuff.NGB.enable_ngb | bool
+        - stuff.NGB.enable_ngb  | bool
 
-- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+- name: Apply ngb-vm-deploy
   gather_facts: true
-  hosts: localhost
+  #become: True
+  hosts:
+    - localhost
   roles:
     - role: ngb-vm-deploy
       when:
         - stuff.NGB.enable_ngb  | bool
 
-- name: Apply kubernetes master role for kubernetes master tasks
+- name: Apply ngb deploy
   gather_facts: true
-  become: True
+  #become: True
   hosts:
     - NGB
   roles:
