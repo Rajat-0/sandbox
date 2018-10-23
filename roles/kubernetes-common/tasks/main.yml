@@ -10,22 +10,42 @@
     line: 'centos ALL=(ALL) NOPASSWD: ALL'
   become: yes
   become_method: "sudo"
+  changed_when: False
 
-- name: Install libselinux to disable selinux
+- name: Copying kubernetes.repo file to dest nodes 
+  copy:
+    src: kubernetes.repo
+    dest: /etc/yum.repos.d/
+    owner: root
+    group: root
+    mode: 0644
+  register: install_packages
+  changed_when: False
+
+- name: ensure a list of kubernetes packages installed
   yum:
-    pkg=libselinux-python
-    state=present
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - kubeadm
+    - docker
+    - vim-enhanced
+    - wget
+    - libselinux-python
+
+- meta: clear_host_errors
 
 - name: Disable selinux
   selinux: state=disabled
+  changed_when: False
 
 - name: disable SELinux
   command: setenforce 0
-  ignore_errors: True
-
-- name: "Install python2 and python-simplejson"
-  become: True
-  raw: "yum install -y python python-simplejson || (apt-get update && apt-get install -y python2.7 python-simplejson)"
+  changed_when: False
+  register: disable_selinux
+  failed_when:
+    - disable_selinux.rc != 0
 
 - name: Gather facts
   setup:
@@ -38,35 +58,18 @@
         {% for host in groups['kubernetes'] %}
         {{ hostvars[host]['ansible_default_ipv4']['address'] }} {{ hostvars[host]['ansible_hostname']+".novalocal " + hostvars[host]['ansible_hostname'] }}
         {% endfor %}
-  become: True
-
-- name: Copying kubernetes.repo file to dest nodes 
-  copy:
-    src: kubernetes.repo
-    dest: /etc/yum.repos.d/
-    owner: root
-    group: root
-    mode: 0644
-
-- name: ensure a list of kubernetes packages installed
-  yum:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-    - kubeadm
-    - docker
-    - vim-enhanced
-    - wget
+  register: etc_hosts_entry
+  changed_when: False
 
 - name: Add the below entries in the conf file to change the Linux host bridge values.
   lineinfile:
     path: /etc/sysctl.conf
     line: "{{ item }}"
-  changed_when: True
+  register: add_lines_to_sysctl
   with_items:
     - "net.bridge.bridge-nf-call-iptables = 1"
     - "net.bridge.bridge-nf-call-ip6tables = 1"
+  changed_when: False
 
 - name: start and enable kubernetes services
   systemd:

@@ -6,11 +6,11 @@
       include_vars:
         file: cloud-config.yaml
         name: stuff
+      changed_when: True
 
 - name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
   gather_facts: true
-  hosts:
-    - localhost
+  hosts: localhost
   roles:
     - role: vm-deploy
 
@@ -21,6 +21,7 @@
       include_vars:
         file: cloud-config.yaml
         name: stuff
+      changed_when: True
 
 - name: Apply  kubernetes-common role for common tasks
   gather_facts: true

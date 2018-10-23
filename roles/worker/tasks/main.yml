@@ -2,17 +2,20 @@
 # tasks file for worker
 - name: example copying file with owner and permissions
   copy:
-    src: mydata
-    dest: /root/mydata
+    src: /tmp/mydata
+    dest: /tmp/mydata
     owner: root
     group: root
     mode: 0755
-  when: inventory_hostname in groups['worker']
-  
-
+  register: fatching_mydata_file
 
 - name:  run kubeadm join to add workers in cluster 
   command: "{{ user_data }}"
   register: kubejointoken1
-  changed_when: True
-  when: inventory_hostname in groups['worker']
+  when: fatching_mydata_file.changed
+  changed_when: False
+  failed_when:
+    - kubejointoken1.rc != 0
+
+- debug:
+    msg: "{{ kubejointoken1 }}"

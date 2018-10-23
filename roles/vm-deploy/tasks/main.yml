@@ -9,7 +9,7 @@
     name: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
     key_name: "{{ stuff.openstack.key_name}}"
     image: "{{ stuff.openstack.image}}"
-    wait: yes
+    wait: no
     flavor: "{{ stuff.openstack.flavor}}"
     network: "{{ stuff.openstack.private_network}}"
     security_groups: "{{ stuff.openstack.security_groups}}"
@@ -24,7 +24,7 @@
     reuse: yes
     server: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
     network: "{{ stuff.openstack.external_network}}"
-    wait: True
+    wait: False
   with_sequence:
     count={{ stuff.openstack.count }}
   register: openstackfip
@@ -58,6 +58,7 @@
   with_items: "{{ openstackvmcreate.results }}"
   when: stuff.openstack.count > 1
 
+
 - name: add_host to run time inventory for worker group
   add_host: name={{ item.server.public_v4 }}
             groups=worker
@@ -68,6 +69,7 @@
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[1:] }}"
   when: stuff.openstack.count > 1
+
 
 - name: if count is 1 than add that host to all groups
   add_host:
@@ -82,3 +84,12 @@
     ansible_private_key_file: "{{ stuff.openstack.key_path}}"
   with_items: "{{ openstackvmcreate.results }}"
   when: stuff.openstack.count == 1
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    centos@{{groups['kubernetes'][-1]}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 3

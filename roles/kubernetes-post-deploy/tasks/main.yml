@@ -3,44 +3,59 @@
 - name:  check all namespace services are running
   command: kubectl get pods --all-namespaces
   register: kubectlgetpods
+  failed_when:
+    - kubectlgetpods.rc != 0
+  delay: 10
+  changed_when: False
 
 - debug:
-    var: kubectlgetpods
-    verbosity: 2
+    msg: "{{ kubectlgetpods }}"
+  changed_when: False
 
 - name:  list kubernetes nodes
   command: kubectl get nodes
   register: kubectlnodes
+  failed_when:
+    - kubectlgetpods.rc != 0
+  changed_when: False
 
 - debug:
-    var: kubectlnodes
-    verbosity: 2
+    msg: "{{ kubectlnodes }}"
+  changed_when: False
 
 - name: copying orion package directory to file with owner and permissions
   copy:
     src: ./plateform-templates/admin-service-account.yaml
-    dest: /root/
+    dest: /tmp/
     owner: root
     group: root
     mode: 0755
+  changed_when: False
 
 - name: create admin account user and role
-  command: kubectl create -f /root/admin-service-account.yaml
+  command: kubectl create -f /tmp/admin-service-account.yaml
+  register: create_admin_account
+  failed_when:
+    - create_admin_account.rc != 0
+  changed_when: False
 
 - name: copying admin-secret.sh
   copy:
     src: ./plateform-templates/admin-secret.sh
-    dest: /root/
+    dest: /tmp/
     owner: root
     group: root
     mode: 0755
+  changed_when: False
 
 - name:  run admin-secret.sh on kubernetes master
   shell: ./admin-secret.sh
   args:
-    chdir: /root/
-  changed_when: True
+    chdir: /tmp/
   register: admindetails
+  failed_when:
+    - admindetails.rc != 0
+  changed_when: False
 
 - set_fact:
     admin_token: "{{ admindetails.stdout_lines | last }}"
@@ -48,29 +63,45 @@
 - name:  list kube svc 
   command:  kubectl describe  svc kubernetes-dashboard --namespace kube-system
   register: dashboardport
+  failed_when:
+    - dashboardport.rc != 0
+  changed_when: False
+
+- debug:
+    msg: "{{ dashboardport }}"
+  changed_when: False
 
 - set_fact:
     dashboard_port: "{{ dashboardport.stdout_lines[10].split(':')[1].split(' ')[::-1][0].split('/')[0] }}"
+  changed_when: False
 
-- name: create mydata file
+- name: create dashboard_rc.txt file
   file:
-    path: /root/dashboard_rc.txt
+    path: /tmp/dashboard_rc.txt
     state: touch
     mode: 0755
+  register: dashboard_rc
+  changed_when: False
 
 - name: fill user dashboard details to a text file.
   blockinfile:
-    path: /root/dashboard_rc.txt
+    path: /tmp/dashboard_rc.txt
     marker: "<!-- {mark} ANSIBLE GENRATED dashboard details file -->"
     content: |
       kubernetes dashboard is on  https://{{groups['worker'][0]}}:{{ dashboard_port }}   and 
       {{ admin_token }}
+  register: dashboard_details_to_file
+  changed_when: False
+  when:
+  - dashboard_rc.changed
 
 - fetch:
-    src: /root/dashboard_rc.txt
+    src: /tmp/dashboard_rc.txt
     dest: ./dashboard_rc.txt
     flat: true
-
+  when:
+  - dashboard_details_to_file.changed
+  changed_when: False
 
 
 
