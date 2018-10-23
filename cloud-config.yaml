@@ -9,7 +9,7 @@ openstack:
   external_network: ext-net
   image: centos7.5
   security_groups: sandbox_kube
-  key_path: /home/necuser/Desktop/yadav2.pem
+  key_path: /root/yadav/yadav.pem
   count: 3
 kubernetes:
   flannel_cidr: 10.244.0.0/16
