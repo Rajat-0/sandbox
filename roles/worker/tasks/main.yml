@@ -13,8 +13,6 @@
   command: kubectl get nodes
   register: before_existing_nodes1
   ignore_errors: yes
-  runonce: True
-  delegate_to: "{{ groups['worker'][0] }}"
 
 - name:  run kubeadm join to add workers in cluster
   command: "{{ user_data }}"
