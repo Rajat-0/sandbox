@@ -1,0 +1,15 @@
+- name: Deploy an instance assuming image, network(public/private), flavor and  key are already present in cloud.
+  os_server:
+    state: present
+    name: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
+    key_name: "{{ stuff.openstack.key_name}}"
+    image: "{{ stuff.openstack.image}}"
+    wait: no
+    flavor: "{{ stuff.openstack.flavor}}"
+    network: "{{ stuff.openstack.private_network}}"
+    security_groups: "{{ stuff.openstack.security_groups}}"
+    meta:
+      hostname: "kube0{{ item }}"
+  register: openstackvmcreate
+  with_sequence:
+    count={{ stuff.openstack.count }}

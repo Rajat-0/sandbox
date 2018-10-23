@@ -11,7 +11,7 @@
 - name:  list kubernetes nodes
   command: kubectl get nodes
   register: kubectlnodes
-  until: kubectlnodes.stdout.find("NotReady") != 0
+  until: kubectlnodes.stdout.find(" Ready") != -1
   retries: 100
   delay: 3
 

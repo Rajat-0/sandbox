@@ -11,6 +11,10 @@
 #    owner: root
 #    group: root
 #    mode: 0777
+- name:  list kubernetes nodes
+  command: kubectl get nodes
+  register: before_existing_nodes
+#  until: kubectlnodes.stdout.find(" Ready") != -1
 
 - name: start creating kubernetes cluster
   command: kubeadm init --pod-network-cidr="{{ stuff.kubernetes.flannel_cidr }}"
@@ -19,6 +23,7 @@
   changed_when: False
   failed_when:
     - kubeadm_init_output.rc != 0
+  when: " Ready" is not in before_existing_nodes
 
 - debug:
     msg: "{{ kubeadm_init_output }}"

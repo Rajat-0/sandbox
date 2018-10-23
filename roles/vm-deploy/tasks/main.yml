@@ -2,22 +2,7 @@
 # tasks file for vm-deploy
 #- name: Prepair localhost for running os_server module or creating vm on openstack using ansible
 #  command: pip install shade
-
-- name: Deploy an instance assuming image, network(public/private), flavor and  key are already present in cloud.
-  os_server:
-    state: present
-    name: "{{stuff.openstack.vm_name_prefix}}{{ item }}"
-    key_name: "{{ stuff.openstack.key_name}}"
-    image: "{{ stuff.openstack.image}}"
-    wait: no
-    flavor: "{{ stuff.openstack.flavor}}"
-    network: "{{ stuff.openstack.private_network}}"
-    security_groups: "{{ stuff.openstack.security_groups}}"
-    meta:
-      hostname: "kube0{{ item }}"
-  register: openstackvmcreate
-  with_sequence:
-    count={{ stuff.openstack.count }}
+- include: vm_create.yaml
 
 - os_floating_ip:
     state: present
@@ -29,11 +14,23 @@
     count={{ stuff.openstack.count }}
   register: openstackfip
 
-- name: copy var openstackvmcreate output to a file
-  copy:
-    content: "{{ openstackvmcreate.results }}\n\r"
-    dest: "mydata3"
-    mode: "0755"
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    centos@{{openstackfip.results[-1].floating_ip.floating_ip_address}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 2
+
+- include: vm_create.yaml
+
+
+# - name: copy var openstackvmcreate output to a file
+#   copy:
+#     content: "{{ openstackvmcreate.results }}\n\r"
+#     dest: "mydata3"
+#     mode: "0755"
 
 
 - name: add_host to run time inventory for master group
