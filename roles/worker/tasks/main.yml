@@ -8,6 +8,7 @@
     group: root
     mode: 0755
   register: fatching_mydata_file
+  changed_when: False
 
 - name:  run kubeadm join to add workers in cluster
   command: "{{ user_data }}"
