@@ -1,0 +1,39 @@
+{
+    "discovery_port": 32073,
+    "broker_port": 30389,
+    "master_agent_port": 30749,
+    "rabbitmq_port": 31227,
+    "webportal_ip": "192.168.0.4",      
+    "coreservice_ip": "192.168.0.3",     
+    "external_hostip": "192.168.0.2",      
+    "internal_hostip": "192.168.0.5",  
+    "physical_location":{
+        "longitude": 139.709059,
+        "latitude": 35.692221,
+        "section": "01",
+        "district": "02",
+        "city": "Tokyo"
+    },
+    "logging":{
+        "info":"stdout",
+        "debug": "stdout"
+    },
+    "discovery": {
+        "port": 32073
+    },
+    "broker": {
+        "port": 8080
+    },
+    "master": {
+        "ngsi_agent_port": 1060
+    },
+    "rabbitmq": {
+        "port": 5672,
+        "username": "admin",
+        "password":"mypass"
+    },
+    "designer": {
+        "webSrvPort": 80,
+        "agentPort": 1030
+    }
+}

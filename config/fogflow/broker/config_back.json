@@ -1,0 +1,19 @@
+{
+    "discovery_ip": "discovery.default.svc.cluster.local",
+    "port": 8080,
+    "websocket": 8090,
+    "discoveryURL": "http://discovery:443/ngsi9", 		
+	"physical_location":{
+		"longitude": -1.131133,
+		"latitude": 37.990905,
+		"section": "01",
+		"district": "02",
+		"city": "Tokyo"
+	},			
+	"logging":{
+		"info":"stdout",
+		"error":"stderr",
+        "protocol": "stdout",
+        "debug": "discard"
+	}			
+}

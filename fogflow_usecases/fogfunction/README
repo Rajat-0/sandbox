@@ -1,0 +1,14 @@
+Variables summary:
+./exampleScript.sh $1 $2 $3 $4 $5
+
+########################### ff_pullution_update.sh ###########################
+
+$1: fogflow broker_ip
+$2: entity_id of type "City", for example: City001
+$3: contextValue for attribute "PM10", it must be an integer.
+$4: contextValue for attribute "PM25", it must be an integer.
+$5: latitude value for location, may range between -90 to +90
+$6: longitude value for location, may range between -180 to +180
+
+Sample Request:
+./ff_pullution_update.sh <IP> '"City001"' 46 69 -69.445 38.228

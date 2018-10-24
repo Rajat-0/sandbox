@@ -1,0 +1,22 @@
+{
+    "discovery_port": 32073,
+    "broker_port": 30389,
+    "master_agent_port": 30749,
+    "rabbitmq_port": 31227,
+    "logging":{
+        "info":"stdout",
+        "error":"stderr",
+            "protocol": "stdout",
+            "debug": "discard"
+    },
+    "discovery": {
+        "port": 443
+    },
+    "broker": {
+        "port": 8080
+    },
+    "designer": {
+        "webSrvPort": 80,
+        "agentPort": 1030
+    }
+}
