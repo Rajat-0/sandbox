@@ -11,20 +11,17 @@
 
 - name: Set last_worker_hostname
   set_fact:
-    last_worker_hostname:  hostvars[groups['worker'][-1]['ansible_hostname']
+    last_worker_hostname: "{{stuff.openstack.vm_name_prefix}}{{ stuff.openstack.count }}"
 
 - name: set before_existing_nodes_stdout
   set_fact:
-    before_existing_nodes_stdout: hostvars[groups['master'][-1]['before_existing_nodes']['stdout']
+    before_existing_nodes_stdout: "{{hostvars[groups['master'][-1]]['before_existing_nodes']['stdout'] }}"
 
 - name:  run kubeadm join to add workers in cluster
   command: "{{ user_data }}"
   register: kubejointoken1
-  changed_when: False
-  failed_when:
-    - kubejointoken1.rc != 0
   when:
-  - " last_worker_hostname  not in before_existing_nodes_stdout"
+  - last_worker_hostname  not in before_existing_nodes_stdout
 
 - debug:
     msg: "{{ kubejointoken1 }}"

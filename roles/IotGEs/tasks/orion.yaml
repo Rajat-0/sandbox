@@ -43,4 +43,4 @@
   shell: ./orion_one_click.sh
   args:
     chdir: /tmp/IotGEs/orion
-  changed_when: True
+  changed_when: False
