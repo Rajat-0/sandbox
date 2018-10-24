@@ -17,7 +17,8 @@
 - name: Wait for SSH on the Instance
   command: >
     ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
-    centos@{{openstackfip.results[-1].floating_ip.floating_ip_address}} true
+    centos@{{item.floating_ip.floating_ip_address}} true
+  with_items: "{{ openstackfip.results }}"
   register: result
   until: result|success
   retries: 100
