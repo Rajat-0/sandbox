@@ -1,6 +1,6 @@
 ---
 - name: include_vars
-  hosts: localhost
+  hosts: all
   tasks:
     - name: include_vars
       include_vars:
@@ -16,12 +16,31 @@
       when:
         - stuff.kubernetes.enable_kubernetes  | bool
 
+- name: Apply ngb-vm-deploy
+  gather_facts: true
+  #become: True
+  hosts:
+    - localhost
+  roles:
+    - role: ngb-vm-deploy
+      when:
+        - stuff.NGB.enable_ngb  | bool
+
+- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+  gather_facts: true
+  hosts: all
+  tasks:
+    - name: copying cloud-config.yaml to all the nodes
+      copy:
+        src: ./cloud-config.yaml
+        dest: /tmp
+
 - name: include_vars
   hosts: kubernetes
   tasks:
     - name: include_vars
       include_vars:
-        file: cloud-config.yaml
+        file: /tmp/cloud-config.yaml
         name: stuff
       changed_when: True
       when:
@@ -86,19 +105,9 @@
   tasks:
     - name: include_vars
       include_vars:
-        file: cloud-config.yaml
+        file: /tmp/cloud-config.yaml
         name: stuff
       changed_when: True
-      when:
-        - stuff.NGB.enable_ngb  | bool
-
-- name: Apply ngb-vm-deploy
-  gather_facts: true
-  #become: True
-  hosts:
-    - localhost
-  roles:
-    - role: ngb-vm-deploy
       when:
         - stuff.NGB.enable_ngb  | bool
 
