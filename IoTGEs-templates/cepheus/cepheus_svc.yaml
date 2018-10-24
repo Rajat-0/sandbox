@@ -3,24 +3,13 @@ apiVersion: v1
 metadata:
   name: cepheus
 spec:
-  type: NodePort
   ports:
   - name: "8080"
     port: 8090
     targetPort: 8080
-    nodePort: 31429
   - name: "8081"
     port: 8091
     targetPort: 8081
-    nodePort: 31457
   selector:
     app: cepheus
-status:
-  loadBalancer: {}
-#  externalIPs:
-#    - 195.134.187.35
-#  ports:
-#  - name: http
-#    protocol: TCP
-#    port: 1026
-#    targetPort: 1026
+  externalIPs:

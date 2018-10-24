@@ -124,13 +124,20 @@
     dest: /tmp/kubernetes-dashboard.yaml
   register: kubernetes_dashboard_yaml
 
-- name: add type NodePort to kubernetes-dashboard.yaml for accesing dashboard from workerIP+nodeport
+- name: add externalIPs keyword to kubernetes-dashboard.yaml for accesing dashboard
   lineinfile:
     path: /tmp/kubernetes-dashboard.yaml
     insertafter: 'targetPort: 8443'
-    line: '  type: NodePort'
+    line: '  externalIPs:'
   register: kubernetes_dashboard_yaml_addnodeport
+  
 
+- name: add IP of master to externalIPs keyword to kubernetes-dashboard.yaml for accesing dashboard
+  lineinfile:
+    path: /tmp/kubernetes-dashboard.yaml
+    insertafter: 'externalIPs:'
+    line: '  - {{groups['master'][0]}}'
+  register: kubernetes_dashboard_yaml_addnodeport
 
 - name:  install kubernetes-dashboard 
   command: kubectl apply -f /tmp/kubernetes-dashboard.yaml

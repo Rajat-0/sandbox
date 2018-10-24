@@ -3,20 +3,10 @@ apiVersion: v1
 metadata:
   name: cygnus-sth 
 spec:
-  type: NodePort
   ports:
   - name: "5050"
     port: 5050
     targetPort: 5050
-    nodePort: 32183
   selector:
     app: cygnus-sth
-#status:
-#  loadBalancer: {}
-#  externalIPs:
-#    - 195.134.187.35
-#  ports:
-#  - name: http
-#    protocol: TCP
-#    port: 5050
-#    targetPort: 5050
+  externalIPs:

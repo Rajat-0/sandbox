@@ -3,13 +3,19 @@
 - name: copying cygnus-sth package directory to file with owner and permissions
   copy:
     src: ./IoTGEs-templates/cygnus-sth
-    dest: /root/IotGEs/
+    dest: /tmp/IotGEs/
     owner: root
     group: root
     mode: 0755
 
+- name: add IP of master to externalIPs
+  lineinfile:
+    path: /tmp/IotGEs/cygnus-sth/kube_svc_cygnus_sth.yaml
+    insertafter: 'externalIPs:'
+    line: '  - {{groups['master'][0]}}'
+
 - name:  install cyhnus_sth GE
   shell: ./cyhnus_sth_oneclick.sh
   args:
-    chdir: /root/IotGEs/cygnus-sth
-  changed_when: True
+    chdir: /tmp/IotGEs/cygnus-sth
+  changed_when: False

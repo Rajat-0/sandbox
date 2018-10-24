@@ -3,26 +3,26 @@
 - name: copying orion package directory to file with owner and permissions
   copy:
     src: ./IoTGEs-templates/orion
-    dest: /root/IotGEs/
+    dest: /tmp/IotGEs/
     owner: root
     group: root
     mode: 0755
 
 - name: add nfs server ip to pv
   lineinfile:
-    path: /root/IotGEs/orion/volume1.yaml
+    path: /tmp/IotGEs/orion/volume1.yaml
     insertafter: '  nfs:'
     line: '    server: {{ ansible_default_ipv4.address }}'
 
 - name: add nfs server ip to pv
   lineinfile:
-    path: /root/IotGEs/orion/volume2.yaml
+    path: /tmp/IotGEs/orion/volume2.yaml
     insertafter: '  nfs:'
     line: '    server: {{ ansible_default_ipv4.address }}'
 
 - name: add nfs server ip to pv
   lineinfile:
-    path: /root/IotGEs/orion/volume3.yaml
+    path: /tmp/IotGEs/orion/volume3.yaml
     insertafter: '  nfs:'
     line: '    server: {{ ansible_default_ipv4.address }}'
 
@@ -30,11 +30,17 @@
 - name:  run nfs-server on kubernetes master
   shell: ./nfs-master.sh
   args:
-    chdir: /root/IotGEs/orion
+    chdir: /tmp/IotGEs/orion
   changed_when: True
+
+- name: add IP of master to externalIPs
+  lineinfile:
+    path: /tmp/IotGEs/orion/kube_svc_orion.yaml
+    insertafter: 'externalIPs:'
+    line: '  - {{groups['master'][0]}}'
 
 - name:  install orion GE
   shell: ./orion_one_click.sh
   args:
-    chdir: /root/IotGEs/orion
+    chdir: /tmp/IotGEs/orion
   changed_when: True

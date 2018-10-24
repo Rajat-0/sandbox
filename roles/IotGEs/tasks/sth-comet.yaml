@@ -3,13 +3,19 @@
 - name: copying sth-comet package directory to file with owner and permissions
   copy:
     src: ./IoTGEs-templates/sth-comet
-    dest: /root/IotGEs/
+    dest: /tmp/IotGEs/
     owner: root
     group: root
     mode: 0755
 
+- name: add IP of master to externalIPs
+  lineinfile:
+    path: /tmp/IotGEs/sth-comet/fiware-sth2-comet-service.yaml
+    insertafter: 'externalIPs:'
+    line: '  - {{groups['master'][0]}}'
+
 - name:  install sth-comet GE
   shell: ./sth-comet_oneclick.sh
   args:
-    chdir: /root/IotGEs/sth-comet
-  changed_when: True
+    chdir: /tmp/IotGEs/sth-comet
+  changed_when: False

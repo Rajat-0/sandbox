@@ -63,12 +63,12 @@
   failed_when:
     - dashboardport.rc != 0
 
-
 - debug:
     msg: "{{ dashboardport }}"
 
 - set_fact:
-    dashboard_port: "{{ dashboardport.stdout_lines[10].split(':')[1].split(' ')[::-1][0].split('/')[0] }}"
+    dashboard_port: "{{ dashboardport.stdout_lines[10].split(' ')[::-1][0].split('/')[0] }}"
+#    dashboard_port: "{{ dashboardport.stdout_lines[10].split(':')[1].split(' ')[::-1][0].split('/')[0] }}"
 
 - name: create dashboard_rc.txt file
   file:
@@ -82,7 +82,7 @@
     path: /tmp/dashboard_rc.txt
     marker: "<!-- {mark} ANSIBLE GENRATED dashboard details file -->"
     content: |
-      kubernetes dashboard is on  https://{{groups['worker'][0]}}:{{ dashboard_port }}   and 
+      kubernetes dashboard is on  https://{{groups['master'][0]}}:{{ dashboard_port }}   and 
       {{ admin_token }}
   register: dashboard_details_to_file
 
