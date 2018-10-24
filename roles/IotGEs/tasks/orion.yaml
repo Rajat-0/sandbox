@@ -37,7 +37,7 @@
   lineinfile:
     path: /tmp/IotGEs/orion/kube_svc_orion.yaml
     insertafter: 'externalIPs:'
-    line: '  - {{groups['master'][0]}}'
+    line: '  - {{master_ip}}'
 
 - name:  install orion GE
   shell: ./orion_one_click.sh

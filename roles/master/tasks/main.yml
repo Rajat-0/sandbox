@@ -130,13 +130,15 @@
     insertafter: 'targetPort: 8443'
     line: '  externalIPs:'
   register: kubernetes_dashboard_yaml_addnodeport
-  
+
+- set_fact:
+    master_ip: "{{groups['master'][0]}}"
 
 - name: add IP of master to externalIPs keyword to kubernetes-dashboard.yaml for accesing dashboard
   lineinfile:
     path: /tmp/kubernetes-dashboard.yaml
     insertafter: 'externalIPs:'
-    line: '  - {{groups['master'][0]}}'
+    line: '  - {{master_ip}}'
   register: kubernetes_dashboard_yaml_addnodeport
 
 - name:  install kubernetes-dashboard 
