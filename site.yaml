@@ -1,6 +1,6 @@
 ---
 - name: include_vars
-  hosts: all
+  hosts: localhost
   tasks:
     - name: include_vars
       include_vars:
@@ -26,25 +26,29 @@
       when:
         - stuff.NGB.enable_ngb  | bool
 
-- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
-  gather_facts: true
-  hosts: all
-  tasks:
-    - name: copying cloud-config.yaml to all the nodes
-      copy:
-        src: ./cloud-config.yaml
-        dest: /tmp
+# - name: set_fact
+#   hosts: all
+#     - name: Set openstack_release variable
+#       set_fact:
+#         enable_kubernetes: "{{ stuff.kubernetes.enable_kubernetes  | bool }}"
+
+# - name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+#   gather_facts: true
+#   hosts: all
+#   tasks:
+#     - name: copying cloud-config.yaml to all the nodes
+#       copy:
+#         src: ./cloud-config.yaml
+#         dest: /tmp
 
 - name: include_vars
-  hosts: kubernetes
+  hosts: all
   tasks:
     - name: include_vars
       include_vars:
-        file: /tmp/cloud-config.yaml
+        file: cloud-config.yaml
         name: stuff
       changed_when: True
-      when:
-        - stuff.kubernetes.enable_kubernetes  | bool
 
 - name: Apply  kubernetes-common role for common tasks
   gather_facts: true
