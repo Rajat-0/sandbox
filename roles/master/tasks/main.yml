@@ -134,11 +134,14 @@
 - set_fact:
     master_ip: "{{groups['master'][0]}}"
 
+- set_fact:
+    master_internal_ip: "{{ ansible_default_ipv4.address }}"
+
 - name: add IP of master to externalIPs keyword to kubernetes-dashboard.yaml for accesing dashboard
   lineinfile:
     path: /tmp/kubernetes-dashboard.yaml
     insertafter: 'externalIPs:'
-    line: '  - {{master_ip}}'
+    line: '  - {{master_internal_ip}}'
   register: kubernetes_dashboard_yaml_addnodeport
 
 - name:  install kubernetes-dashboard 

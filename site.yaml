@@ -44,7 +44,6 @@
     - role: kubernetes-common
       when:
         - stuff.kubernetes.enable_kubernetes  | bool
-#      when: kolla_action == "precheck"
 
 - name: Apply kubernetes master role for kubernetes master tasks
   gather_facts: true

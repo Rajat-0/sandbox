@@ -12,7 +12,7 @@
   lineinfile:
     path: /tmp/IotGEs/cygnus-sth/kube_svc_cygnus_sth.yaml
     insertafter: 'externalIPs:'
-    line: '  - {{master_ip}}'
+    line: '  - {{master_internal_ip}}'
 
 - name:  install cyhnus_sth GE
   shell: ./cyhnus_sth_oneclick.sh

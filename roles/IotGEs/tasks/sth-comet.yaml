@@ -12,7 +12,7 @@
   lineinfile:
     path: /tmp/IotGEs/sth-comet/fiware-sth2-comet-service.yaml
     insertafter: 'externalIPs:'
-    line: '  - {{master_ip}}'
+    line: '  - {{master_internal_ip}}'
 
 - name:  install sth-comet GE
   shell: ./sth-comet_oneclick.sh
