@@ -16,3 +16,7 @@
 - include: cepheus.yaml
   when:
     - stuff.enable_cepheus | bool
+
+- include: fogflow.yaml
+  when:
+    - stuff.enable_fogflow | bool
