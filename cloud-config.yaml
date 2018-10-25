@@ -20,6 +20,7 @@ enable_orion: "no"
 enable_sth_comet: "no"
 enable_cygnus_sth: "no"
 enable_cepheus: "no"
+enable_fogflow: "no"
 
 NGB:
   enable_ngb: "yes"
