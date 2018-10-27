@@ -93,29 +93,30 @@
 - set_fact:
             db_pod_name: "{{ dbpodname.stdout_lines[1].split(' ')[0] }}"
 
+- name: find ckan pods
+  command: kubectl get pods --selector=io.kompose.service=ckan
+  register: ckanpodname
+
+- set_fact:
+            ckan_pod_name: "{{ ckanpodname.stdout_lines[1].split(' ')[0] }}"
+
 - name: create /tmp/dbperm.sh file
   file:
     path: /tmp/dbperm.sh
     state: touch
     mode: 0755
 
-- name: add db permissions commands to dbperm.sh file.
+- name: add db permissions commands and ckan useradd commands to dbperm.sh file.
   blockinfile:
     path: /tmp/dbperm.sh
     content: |
-      kubectl exec -it {{ db_pod_name }} bash <<'EOF'
+      kubectl exec -it {{ db_pod_name }} bash --tty=false  <<'EOF'
       /opt/perm1.sh
       EOF
-
-
-- name:  create yadav user
-  command: /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
-  register: yadav_user
-
-
-- name:  make yaadv as sysadmin user
-  command: /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
-  register: yadav_as_sysadmin
+      kubectl exec -it {{ ckan_pod_name }} bash --tty=false  <<'EOF'
+      /usr/local/bin/ckan-paster --plugin=ckan user add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
+      /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
+      EOF
 
 - name:  run /tmp/dbperm.sh shell script to set db permissions
   command: /tmp/dbperm.sh
