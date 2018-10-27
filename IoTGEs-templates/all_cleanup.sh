@@ -14,3 +14,6 @@ sleep 5
 
 cd ../cygnus-sth
 ./cyhnus_sth_cleanup.sh
+
+cd ../ckan
+./ckan_cleanup.sh

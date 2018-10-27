@@ -14,3 +14,8 @@ sleep 5
 
 cd ../cygnus-sth
 ./cyhnus_sth_oneclick.sh
+
+sleep 5 
+
+cd ../ckan
+./ckan_one_click.s
