@@ -126,9 +126,8 @@
       EOF
 
 - name:  run /tmp/dbperm.sh shell script to set db permissions
-  command: /tmp/dbperm.sh
+  command: /bin/bash /tmp/dbperm.sh > /tmp/cbperm-sh-logs.txt
   register: dbperm2
-  ignore_errors: yes
 
 - debug:
     msg: "ckan is running on     http://{{groups['master'][0]}}:5000            "
