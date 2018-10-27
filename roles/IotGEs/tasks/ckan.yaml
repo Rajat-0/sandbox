@@ -79,7 +79,7 @@
   lineinfile:
     path: /tmp/IotGEs/ckan/ckan-deployment.yaml
     insertafter: '- name: CKAN_SITE_URL'
-    line: '          value: http://{{master_internal_ip}}:5000'
+    line: '          value: http://{{groups['master'][0]}}:5000'
 
 - name: find db pods
   command: kubectl get pods --selector=io.kompose.service=db
