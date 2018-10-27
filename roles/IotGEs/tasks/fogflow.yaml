@@ -44,7 +44,7 @@
 
 #######################
 
-me: adding rabbitmq_ip in configuration file of designer
+- name: adding rabbitmq_ip in configuration file of designer
   lineinfile:
     path: /tmp/IotGEs/fogflow/config/designer/config.json
     insertbefore: '    "discovery_port": 444,'
