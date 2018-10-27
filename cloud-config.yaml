@@ -11,19 +11,23 @@ openstack:
   security_groups: sandbox_kube
   key_path: /root/yadav/yadav.pem
   count: 3
+
 kubernetes:
   enable_kubernetes: "no"
   flannel_cidr: 10.244.0.0/16
 
 enable_IotGEs: "no"
+
 enable_orion: "no"
 enable_sth_comet: "no"
 enable_cygnus_sth: "no"
 enable_cepheus: "no"
+enable_cygnus_ckan: "no"
+enable_ckan: "no"
 enable_fogflow: "no"
 
 NGB:
-  enable_ngb: "yes"
+  enable_ngb: "no"
   vm_name_prefix: NGB
   key_name: yadav2
   flavor: m1.medium

@@ -107,14 +107,3 @@ DO $body$
 $body$;
 
 
-/usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
-
-sysadmin add USERNAME
-
-
-
-/usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
-
-/usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
-
-

@@ -14,8 +14,8 @@
     insertafter: 'externalIPs:'
     line: '  - {{master_internal_ip}}'
 
-- name:  install cyhnus_sth GE
-  shell: ./cyhnus_sth_oneclick.sh
+- name:  install cygnus_sth GE
+  shell: ./cygnus_sth_oneclick.sh
   args:
     chdir: /tmp/IotGEs/cygnus-sth
   changed_when: False

@@ -13,9 +13,21 @@ cd ../sth-comet
 sleep 5
 
 cd ../cygnus-sth
-./cyhnus_sth_oneclick.sh
+./cygnus_sth_oneclick.sh
 
 sleep 5 
 
+
+cd ../cygnus-ckan
+./cygnus_ckan_oneclick.sh
+
+sleep 5
+
 cd ../ckan
-./ckan_one_click.s
+./ckan_one_click.sh
+
+
+
+
+
+

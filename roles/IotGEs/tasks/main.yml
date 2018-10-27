@@ -17,6 +17,16 @@
   when:
     - stuff.enable_cepheus | bool
 
+- include: cygnus-ckan.yaml
+  when:
+    - stuff.enable_cygnus_ckan | bool
+    - stuff.enable_ckan | bool
+
+- include: ckan.yaml
+  when:
+    - stuff.enable_ckan | bool
+
 - include: fogflow.yaml
   when:
     - stuff.enable_fogflow | bool
+

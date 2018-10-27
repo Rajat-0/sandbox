@@ -1,4 +1,5 @@
 echo "++++++++++ ckan install starting+++++++++++"
+
 kubectl create  -f ./volume1.yaml
 kubectl create  -f ./volume2.yaml
 kubectl create  -f ./redis-service.yaml
