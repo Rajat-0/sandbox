@@ -9,12 +9,13 @@ metadata:
     io.kompose.service: rabbitmq
   name: rabbitmq
 spec:
+  type: NodePort
   ports:
   - name: "5672"
     port: 5672
     targetPort: 5672
+    nodePort: 31227
   selector:
     io.kompose.service: rabbitmq
-  externalIPs:
 status:
   loadBalancer: {}

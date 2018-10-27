@@ -9,12 +9,13 @@ metadata:
     io.kompose.service: discovery
   name: discovery
 spec:
+  type: NodePort
   ports:
   - name: "443"
-    port: 444
+    port: 443
     targetPort: 443
+    nodePort: 32073
   selector:
     io.kompose.service: discovery
-  externalIPs:
 status:
   loadBalancer: {}

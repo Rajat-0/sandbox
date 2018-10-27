@@ -1,6 +1,6 @@
 {
     "discovery_ip": "discovery.default.svc.cluster.local",
-    "port": 443,
+    "port": 8080,
     "websocket": 8090,
     "discoveryURL": "http://discovery:443/ngsi9", 		
 	"physical_location":{

@@ -9,15 +9,17 @@ metadata:
     io.kompose.service: designer
   name: designer
 spec:
+  type: NodePort
   ports:
   - name: "80"
-    port: 81
+    port: 80
     targetPort: 80
+    nodePort: 32663
   - name: "1030"
     port: 1030
     targetPort: 1030
+    nodePort: 31803
   selector:
     io.kompose.service: designer
-  externalIPs:
 status:
   loadBalancer: {}
