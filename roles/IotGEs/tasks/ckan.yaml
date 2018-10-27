@@ -113,21 +113,37 @@
     state: touch
     mode: 0755
 
-- name: add db permissions commands and ckan useradd commands to dbperm.sh file.
+- name: create /tmp/ckanuser.sh file
+  file:
+    path: /tmp/ckanuser.sh
+    state: touch
+    mode: 0755
+
+- name: add db permissions commands to dbperm.sh file.
   blockinfile:
     path: /tmp/dbperm.sh
     content: |
       kubectl exec -it {{ db_pod_name }} bash --tty=false  <<'EOF'
       /opt/perm1.sh
       EOF
+
+- name: add ckan useradd commands to dbperm.sh file.
+  blockinfile:
+    path: /tmp/ckanuser.sh
+    content: |
       kubectl exec -it {{ ckan_pod_name }} bash --tty=false  <<'EOF'
       /usr/local/bin/ckan-paster --plugin=ckan user add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
       /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
       EOF
 
+
 - name:  run /tmp/dbperm.sh shell script to set db permissions
   command: /bin/bash /tmp/dbperm.sh > /tmp/cbperm-sh-logs.txt
   register: dbperm2
+  
+- name:  run /tmp/ckanuser.sh shell script to set db permissions
+  command: /bin/bash /tmp/ckanuser.sh
+  register: ckanusersh
 
 - debug:
     msg: "ckan is running on     http://{{groups['master'][0]}}:5000            "
