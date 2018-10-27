@@ -119,6 +119,12 @@
     state: touch
     mode: 0755
 
+- name: create /tmp/ckanuser1.sh file
+  file:
+    path: /tmp/ckanuser1.sh
+    state: touch
+    mode: 0755
+
 - name: add db permissions commands to dbperm.sh file.
   blockinfile:
     path: /tmp/dbperm.sh
@@ -127,23 +133,33 @@
       /opt/perm1.sh
       EOF
 
-- name: add ckan useradd commands to dbperm.sh file.
+- name: add ckan useradd commands to ckanuser file.
   blockinfile:
     path: /tmp/ckanuser.sh
     content: |
       kubectl exec -it {{ ckan_pod_name }} bash --tty=false  <<'EOF'
       /usr/local/bin/ckan-paster --plugin=ckan user add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
-      /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
       EOF
 
-
+- name: add ckan useradd commands to ckanuser1 file.
+  blockinfile:
+    path: /tmp/ckanuser1.sh
+    content: |
+      kubectl exec -it {{ ckan_pod_name }} bash --tty=false  <<'EOF'
+      /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
+      EOF
 - name:  run /tmp/dbperm.sh shell script to set db permissions
-  command: /bin/bash /tmp/dbperm.sh > /tmp/cbperm-sh-logs.txt
+  command: /bin/bash /tmp/dbperm.sh
   register: dbperm2
   
-- name:  run /tmp/ckanuser.sh shell script to set db permissions
+- name:  run /tmp/ckanuser.sh shell script to set ckan user permissions
   command: /bin/bash /tmp/ckanuser.sh
   register: ckanusersh
+  
+  
+- name:  run /tmp/ckanuser1.sh shell script to set systemadmin role permissions
+  command: /bin/bash /tmp/ckanuser1.sh
+  register: ckanuser1sh
 
 - debug:
     msg: "ckan is running on     http://{{groups['master'][0]}}:5000            "
