@@ -75,9 +75,9 @@
     line: '  - {{master_internal_ip}}'
 
 
-- name:  in ckan service template
+- name:  insert ckan_site_url to ckan-deployment.yaml
   lineinfile:
-    path: /tmp/IotGEs/ckan/ckan-service.yaml
+    path: /tmp/IotGEs/ckan/ckan-deployment.yaml
     insertafter: '- name: CKAN_SITE_URL'
     line: '          value: http://{{master_internal_ip}}:5000'
 
