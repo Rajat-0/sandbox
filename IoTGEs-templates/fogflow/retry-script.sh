@@ -1,13 +1,10 @@
-echo $1
-
 echo "Checking if $1 pod is up.."
 DATA=""
 RETRY=40
 while [ $RETRY -gt 0 ]
 do
     DATA=$(kubectl get pods | grep "Running" | grep $1 )
-    echo $?
-    if [ $DATA != ""]
+    if [ $? -eq 0 ]
     then
         break
     else
@@ -16,8 +13,4 @@ do
     fi
     echo "Retrying..."
 done
-
-echo "'$1' is now running..."
-
-
-if $DATA != ""
+echo "$1 is now running..."
