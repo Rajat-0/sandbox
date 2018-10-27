@@ -29,7 +29,6 @@ spec:
         - name: CKAN_REDIS_URL
           value: redis://ckanredis.default.svc.cluster.local:6379/1
         - name: CKAN_SITE_URL
-          value: http://180.179.214.213:31240
         - name: CKAN_SOLR_URL
           value: http://ckansolr.default.svc.cluster.local:8983/solr/ckan
         - name: CKAN_SQLALCHEMY_URL
