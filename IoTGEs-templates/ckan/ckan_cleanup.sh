@@ -11,6 +11,7 @@ kubectl delete   -f ./redis-service.yaml
 kubectl delete  -f ./redis-deployment.yaml
 kubectl delete   -f ./volume1.yaml
 kubectl delete   -f ./volume2.yaml
+kubectl delete   -f ./volume3.yaml
 rm -rvf /ckan/pgdata/*
 rm -rvf /ckan/ckanconfig/*
 echo "++++++++++ckan oneclick ckan cleanup completed+++++++++++"

@@ -79,7 +79,7 @@
   register: dbpodname_before
   ignore_errors: yes
 
-- name:  install cygnus_ckan GE
+- name:  install ckan GE
   shell: ./ckan_one_click.sh
   args:
     chdir: /tmp/IotGEs/ckan
@@ -107,9 +107,20 @@
       /opt/perm1.sh
       EOF
 
+
+- name:  create yadav user
+  command: /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav apikey=4f884745-99a9-4389-954e-43513903f39b password=abc@1234 email=ravinder.kumar@india.nec.com  --config=/etc/ckan/production.ini
+  register: yadav_user
+
+
+- name:  make yaadv as sysadmin user
+  command: /usr/local/bin/ckan-paster --plugin=ckan sysadmin add yadav   --config=/etc/ckan/production.ini
+  register: yadav_as_sysadmin
+
 - name:  run /tmp/dbperm.sh shell script to set db permissions
   command: /tmp/dbperm.sh
   register: dbperm2
+  ignore_errors: yes
 
 - debug:
     msg: "ckan is running on     http://{{groups['master'][0]}}:5000            "
