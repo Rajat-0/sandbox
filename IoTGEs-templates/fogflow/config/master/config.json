@@ -1,8 +1,8 @@
 {
-    "discovery_port": 32073,
-    "broker_port": 30389,
-    "master_agent_port": 30749,
-    "rabbitmq_port": 31227,
+    "discovery_port": 444,
+    "broker_port": 8082,
+    "master_agent_port": 5432,
+    "rabbitmq_port": 5672,
     "webportal_ip": "192.168.0.4",      
     "coreservice_ip": "192.168.0.3",     
     "external_hostip": "192.168.0.2",      
@@ -19,7 +19,7 @@
         "debug": "stdout"
     },
     "discovery": {
-        "port": 32073
+        "port": 443
     },
     "broker": {
         "port": 8080

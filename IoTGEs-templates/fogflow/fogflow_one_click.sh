@@ -23,33 +23,35 @@ echo "Creating ConfigMaps..."
 
 echo "________________________________"
 
+mkdir /tmp/fog
+
 echo "Deploying rabbitmq..."
 kubectl create -f rabbitmq-deployment.yaml
-sleep 30s
+./retry-script.sh "rabbitmq" > /tmp/fog/rabbit.txt
 
 echo "Deploying postgis..."
 kubectl create -f postgis-deployment.yaml
-sleep 30s
+./retry-script.sh "postgis" > /tmp/fog/postgis.txt
 
 echo "Deploying discovery..."
 kubectl create -f discovery-deployment.yaml
-sleep 30s
+./retry-script.sh "discovery" > /tmp/fog/discovery.txt
 
 echo "Deploying broker..."
 kubectl create -f broker-deployment.yaml
-sleep 30s
+./retry-script.sh "broker" > /tmp/fog/broker.txt
 
 echo "Deploying designer..."
 kubectl create -f designer-deployment.yaml
-sleep 30s
+./retry-script.sh "designer" > /tmp/fog/designer.txt
 
 echo "Deploying master..."
 kubectl create -f master-deployment.yaml
-sleep 30s
+./retry-script.sh "master" > /tmp/fog/master.txt
 
 echo "Deploying worker..."
 kubectl create -f cloud-worker-deployment.yaml
-sleep 30s
+./retry-script.sh "cloud-worker" > /tmp/fog/cloud-worker.txt
 
 
 echo "Complete!"

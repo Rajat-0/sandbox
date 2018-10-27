@@ -18,7 +18,7 @@ spec:
         io.kompose.service: postgis
     spec:
       containers:
-      - image: mdillon/postgis
+      - image: rhcayadav/postgis:v1.1
         name: postgis
         ports:
         - containerPort: 5432

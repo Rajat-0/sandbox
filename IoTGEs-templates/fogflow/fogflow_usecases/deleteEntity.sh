@@ -1,5 +1,5 @@
 curl -iX POST \
-  'http://192.168.20.86:30389/ngsi10/updateContext' \
+  'http://192.168.20.86:8082/ngsi10/updateContext' \
   -H 'Content-Type: application/json' \
   -d '
 {

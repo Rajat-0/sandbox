@@ -20,7 +20,7 @@
 
 - name: copying  admin-service-account.yaml
   copy:
-    src: ./plateform-templates/admin-service-account.yaml
+    src: ./platform-templates/admin-service-account.yaml
     dest: /tmp/
     owner: root
     group: root
@@ -40,7 +40,7 @@
 
 - name: copying admin-secret.sh
   copy:
-    src: ./plateform-templates/admin-secret.sh
+    src: ./platform-templates/admin-secret.sh
     dest: /tmp/
     owner: root
     group: root
