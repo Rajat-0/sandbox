@@ -74,6 +74,13 @@
     insertafter: 'externalIPs:'
     line: '  - {{master_internal_ip}}'
 
+
+- name:  in ckan service template
+  lineinfile:
+    path: /tmp/IotGEs/ckan/ckan-service.yaml
+    insertafter: '- name: CKAN_SITE_URL'
+    line: '          value: http://{{master_internal_ip}}:5000'
+
 - name: find db pods
   command: kubectl get pods --selector=io.kompose.service=db
   register: dbpodname_before
