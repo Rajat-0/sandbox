@@ -2,6 +2,7 @@ echo "++++++++++ ckan install starting+++++++++++"
 
 kubectl create  -f ./volume1.yaml
 kubectl create  -f ./volume2.yaml
+kubectl create  -f ./volume3.yaml
 kubectl create  -f ./redis-service.yaml
 kubectl create -f ./redis-deployment.yaml
 kubectl create  -f ./solr-service.yaml
