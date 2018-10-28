@@ -79,7 +79,6 @@
 - name: install IoTGEs
   gather_facts: true
   become: True
-  strategy: free
   hosts:
     - master
   roles:
