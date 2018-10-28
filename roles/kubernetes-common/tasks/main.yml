@@ -71,11 +71,9 @@
 - name: add content to kubernetes.list file
   blockinfile:
     path: /etc/apt/sources.list.d/kubernetes.list
-    marker: "<!-- {mark} ANSIBLE GENRATED kubernetes repo details file -->"
     content: |
       deb https://apt.kubernetes.io/ kubernetes-{{ ansible_distribution_release | lower }} main
   when: ansible_os_family == 'Debian'
-
 
 - name: Update apt cache
   apt:
