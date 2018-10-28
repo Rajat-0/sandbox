@@ -40,11 +40,6 @@
   become: True
   when: ansible_os_family == 'Debian'
 
-- name: 
-  command: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - "
-  register: debain_kube_gpgkey_add
-  when: ansible_os_family == 'Debian'
-
 - name: Install initial packages
   package:
     name: "{{ item }}"
@@ -57,6 +52,11 @@
     - vim
     - net-tools
     - telnet
+  when: ansible_os_family == 'Debian'
+
+- name: 
+  command: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - "
+  register: debain_kube_gpgkey_add
   when: ansible_os_family == 'Debian'
 
 - name: create kubernetes.list file
