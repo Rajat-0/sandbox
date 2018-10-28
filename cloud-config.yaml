@@ -1,39 +1,40 @@
 #cloud-config
 # vim: syntax=yaml
+# This file includes all the user input variables. Provide the requirements here and then start the environment deployment.
 ---
-openstack:
-  vm_name_prefix: yadav
-  key_name: yadav2
-  flavor: m1.medium
-  private_network: demo-net
-  external_network: ext-net
-  image: centos7.5     #supported Images versiona Centos7/ Ubuntu16 (name as your openstack image name)
-  security_groups: sandbox_kube
-  key_path: /root/yadav/yadav.pem
-  count: 3
+openstack:                      # openstack group
+  vm_name_prefix: yadav         # prefix of VM name here (1,2,3... will be added to this based on count)
+  key_name: yadav2              # security key-name same as in openstack
+  flavor: m1.medium             # flavor name for instance as in openstack)
+  private_network: demo-net     # private network name as in openstack
+  external_network: ext-net     # external network name as in openstack
+  image: centos7.5              #supported Images versiona Centos7/ Ubuntu16 (name as your openstack image name)
+  security_groups: sandbox_kube         # name of security group as in openstack
+  key_path: /root/yadav/yadav.pem       # path to security key file
+  count: 3                              # number of VMs required
 
-kubernetes:
-  enable_kubernetes: "no"
-  flannel_cidr: 10.244.0.0/16
+kubernetes:                       # kubernetes group is dependent on openstack group
+  enable_kubernetes: "no"         # yes / no
+  flannel_cidr: 10.244.0.0/16     # default address, do not change it until your VM Network CIDR matches with it.
 
-enable_IotGEs: "no"
+enable_IotGEs: "no"                         # yes / no, it will 
 
-enable_orion: "no"
-enable_sth_comet: "no"
-enable_cygnus_sth: "no"
-enable_cepheus: "no"
-enable_cygnus_ckan: "no"
-enable_ckan: "no"
-enable_fogflow: "no"
+enable_orion: "no"                          # yes / no
+enable_sth_comet: "no"                      # yes / no
+enable_cygnus_sth: "no"                     # yes / no
+enable_cepheus: "no"                        # yes / no
+enable_cygnus_ckan: "no"                    # yes / no
+enable_ckan: "no"                           # yes / no
+enable_fogflow: "no"                        # yes / no
 
-NGB:
-  enable_ngb: "no"
-  vm_name_prefix: NGB
-  key_name: yadav2
-  flavor: m1.medium
-  private_network: demo-net
-  external_network: ext-net
-  image: ubuntu_18.04
-  security_groups: sandbox_kube
-  key_path: /root/yadav/yadav.pem
-  count: 1
+NGB:                              # NGB group is independent of any other group.
+  enable_ngb: "no"                # yes / no
+  vm_name_prefix: NGB             # prefix of VM name here (1,2,3... will be added to this based on count)
+  key_name: yadav2                # security key-name same as in openstack
+  flavor: m1.medium               # flavor name for instance as in openstack)
+  private_network: demo-net       # private network name as in openstack
+  external_network: ext-net       # external network name as in openstack
+  image: ubuntu_18.04             #supported Images versiona Ubuntu18 (name as your openstack image name)
+  security_groups: sandbox_kube         # name of security group as in openstack
+  key_path: /root/yadav/yadav.pem       # path to security key file
+  count: 1                              # number of VMs required, only 1 allowed
