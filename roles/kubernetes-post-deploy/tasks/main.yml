@@ -57,17 +57,17 @@
 - set_fact:
     admin_token: "{{ admindetails.stdout_lines | last }}"
 
-- name:  list kube svc and grep dashboard svc
-  command:  kubectl describe  svc kubernetes-dashboard --namespace kube-system
-  register: dashboardport
-  failed_when:
-    - dashboardport.rc != 0
+#- name:  list kube svc and grep dashboard svc
+#  command:  kubectl describe  svc kubernetes-dashboard --namespace kube-system
+#  register: dashboardport
+#  failed_when:
+#    - dashboardport.rc != 0
 
-- debug:
-    msg: "{{ dashboardport }}"
+#- debug:
+#    msg: "{{ dashboardport }}"
 
-- set_fact:
-    dashboard_port: "{{ dashboardport.stdout_lines[10].split(' ')[::-1][0].split('/')[0] }}"
+#- set_fact:
+#    dashboard_port: "{{ dashboardport.stdout_lines[10].split(' ')[::-1][0].split('/')[0] }}"
 #    dashboard_port: "{{ dashboardport.stdout_lines[10].split(':')[1].split(' ')[::-1][0].split('/')[0] }}"
 
 - name: create dashboard_rc.txt file
@@ -82,8 +82,15 @@
     path: /tmp/dashboard_rc.txt
     marker: "<!-- {mark} ANSIBLE GENRATED dashboard details file -->"
     content: |
-      kubernetes dashboard is on  https://{{groups['master'][0]}}:{{ dashboard_port }}   and 
+      ---------------------------
+      ---------------------------
+      kubernetes dashboard is on  https://{{groups['master'][0]}}:443  
+      and token is given below, please use token to login.
+      ---------------------------
+      ---------------------------
       {{ admin_token }}
+      ---------------------------
+      ---------------------------
   register: dashboard_details_to_file
 
 - fetch:
