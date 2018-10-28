@@ -12,14 +12,13 @@ sleep 60
 kubectl create  -f ./db-service.yaml
 kubectl create -f ./db-deployment.yaml
 echo "======waiting 60 sec ===="
-sleep 60
+sleep 100
 kubectl create  -f ./datapusher-service.yaml
 kubectl create -f ./datapusher-deployment.yaml
 echo "======waiting 60 sec ===="
-sleep 60
+sleep 80
 kubectl create  -f ./ckan-service.yaml
 kubectl create -f ./ckan-deployment.yaml
 
-sleep 60
+sleep 100
 echo "++++++++++ckan oneclick soln completed+++++++++++"
-
