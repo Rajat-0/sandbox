@@ -8,7 +8,7 @@
         name: stuff
       changed_when: True
 
-- name: create  kubernetes vms on openstack wtih floating ips using cloud-config.yaml
+- name: create kubernetes vms on openstack with floating ips using cloud-config.yaml
   gather_facts: true
   hosts: localhost
   roles:
@@ -36,7 +36,7 @@
         name: stuff
       changed_when: True
 
-- name: Apply  kubernetes-common role for common tasks
+- name: Apply kubernetes-common role for common tasks
   gather_facts: true
   become: True
   strategy: free
