@@ -114,6 +114,7 @@
             ansible_ssh_user=ubuntu
             ansible_become=True
             ansible_become_user=root
+            ansible_python_interpreter= /usr/bin/python3
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[:1] }}"
   when:
@@ -127,6 +128,7 @@
             ansible_ssh_user=ubuntu
             ansible_become=True
             ansible_become_user=root
+            ansible_python_interpreter= /usr/bin/python3
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results }}"
   when:
@@ -141,6 +143,7 @@
             ansible_ssh_user=ubuntu
             ansible_become=True
             ansible_become_user=root
+            ansible_python_interpreter= /usr/bin/python3
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[1:] }}"
   when:
@@ -158,6 +161,7 @@
     ansible_ssh_user: ubuntu
     ansible_become: True
     ansible_become_user: root
+    ansible_python_interpreter: /usr/bin/python3
     ansible_private_key_file: "{{ stuff.openstack.key_path}}"
   with_items: "{{ openstackvmcreate.results }}"
   when:
