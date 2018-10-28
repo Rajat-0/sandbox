@@ -8,9 +8,10 @@ do
     then
         break
     else
-        #echo "Retrying..."
         sleep 5
     fi
-    echo "Retrying..."
+    (( RETRY-- ))
+    echo "Retrying... $RETRY"
+
 done
 echo "$1 is now running..."
