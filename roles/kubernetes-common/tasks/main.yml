@@ -54,8 +54,10 @@
     - telnet
   when: ansible_os_family == 'Debian'
 
-- name: 
-  command: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - "
+- name: Add an Apt signing key for kubernetes packages, uses whichever key is at the URL
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
   register: debain_kube_gpgkey_add
   when: ansible_os_family == 'Debian'
 
