@@ -7,7 +7,7 @@ openstack:
   flavor: m1.medium
   private_network: demo-net
   external_network: ext-net
-  image: centos7.5
+  image: centos7.5     #supported Images versiona Centos7/ Ubuntu16 (name as your openstack image name)
   security_groups: sandbox_kube
   key_path: /root/yadav/yadav.pem
   count: 3
@@ -37,4 +37,3 @@ NGB:
   security_groups: sandbox_kube
   key_path: /root/yadav/yadav.pem
   count: 1
-

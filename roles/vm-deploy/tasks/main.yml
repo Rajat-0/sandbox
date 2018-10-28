@@ -23,6 +23,18 @@
   until: result|success
   retries: 100
   delay: 2
+  when: ansible_os_family == 'RedHat'
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    ubuntu@{{item.floating_ip.floating_ip_address}} true
+  with_items: "{{ openstackfip.results }}"
+  register: result
+  until: result|success
+  retries: 100
+  delay: 2
+  when: ansible_os_family == 'Debian'
 
 - include: vm_create.yaml
 
@@ -35,7 +47,9 @@
             ansible_become_user=root
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[:1] }}"
-  when: stuff.openstack.count > 1
+  when:
+    - stuff.openstack.count > 1
+    - ansible_os_family == 'RedHat'
 
 - name: add_host to run time inventory for kubernetes group
   add_host: name={{ item.server.public_v4 }}
@@ -46,7 +60,9 @@
             ansible_become_user=root
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results }}"
-  when: stuff.openstack.count > 1
+  when:
+    - stuff.openstack.count > 1
+    - ansible_os_family == 'RedHat'
 
 
 - name: add_host to run time inventory for worker group
@@ -58,7 +74,9 @@
             ansible_become_user=root
             ansible_private_key_file={{ stuff.openstack.key_path}}
   with_items: "{{ openstackvmcreate.results[1:] }}"
-  when: stuff.openstack.count > 1
+  when:
+    - stuff.openstack.count > 1
+    - ansible_os_family == 'RedHat'
 
 
 - name: if count is 1 than add that host to all groups
@@ -73,7 +91,9 @@
     ansible_become_user: root
     ansible_private_key_file: "{{ stuff.openstack.key_path}}"
   with_items: "{{ openstackvmcreate.results }}"
-  when: stuff.openstack.count == 1
+  when:
+    - stuff.openstack.count == 1
+    - ansible_os_family == 'RedHat'
 
 - name: Wait for SSH on the Instance
   command: >
@@ -83,3 +103,74 @@
   until: result|success
   retries: 100
   delay: 3
+  when:
+    - ansible_os_family == 'RedHat'
+
+
+- name: add_host to run time inventory for master group
+  add_host: name={{ item.server.public_v4 }}
+            groups=master
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=ubuntu
+            ansible_become=True
+            ansible_become_user=root
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results[:1] }}"
+  when:
+    - stuff.openstack.count > 1
+    - ansible_os_family == 'Debian'
+
+- name: add_host to run time inventory for kubernetes group
+  add_host: name={{ item.server.public_v4 }}
+            groups=kubernetes
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=ubuntu
+            ansible_become=True
+            ansible_become_user=root
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results }}"
+  when:
+    - stuff.openstack.count > 1
+    - ansible_os_family == 'Debian'
+
+
+- name: add_host to run time inventory for worker group
+  add_host: name={{ item.server.public_v4 }}
+            groups=worker
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=ubuntu
+            ansible_become=True
+            ansible_become_user=root
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results[1:] }}"
+  when:
+    - stuff.openstack.count > 1
+    - ansible_os_family == 'Debian'
+
+
+- name: if count is 1 than add that host to all groups
+  add_host:
+    name: "{{ item.server.public_v4 }}"
+    groups:
+      - kubernetes
+      - master
+    instance_name: "{{ item.server.name }}"
+    ansible_ssh_user: ubuntu
+    ansible_become: True
+    ansible_become_user: root
+    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
+  with_items: "{{ openstackvmcreate.results }}"
+  when:
+    - stuff.openstack.count == 1
+    - ansible_os_family == 'Debian'
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    ubuntu@{{groups['kubernetes'][-1]}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 3
+  when:
+    - ansible_os_family == 'Debian'

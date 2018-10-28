@@ -11,6 +11,17 @@
   become: yes
   become_method: "sudo"
   changed_when: False
+  when: ansible_os_family == 'RedHat'
+
+- name: Grant centos user passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: 'ubuntu ALL=(ALL) NOPASSWD: ALL'
+  become: yes
+  become_method: "sudo"
+  changed_when: False
+  when: ansible_os_family == 'Debian'
 
 - name: Copying kubernetes.repo file to dest nodes 
   copy:
@@ -21,6 +32,54 @@
     mode: 0644
   register: install_packages
   changed_when: False
+  when: ansible_os_family == 'RedHat'
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: True
+  when: ansible_os_family == 'Debian'
+
+- name: 
+  command: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - "
+  register: debain_kube_gpgkey_add
+  when: ansible_os_family == 'Debian'
+
+- name: Install initial packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - apt-transport-https
+    - curl
+    - wget
+    - vim
+    - net-tools
+    - telnet
+  when: ansible_os_family == 'Debian'
+
+- name: create kubernetes.list file
+  file:
+    path: /etc/apt/sources.list.d/kubernetes.list
+    state: touch
+    mode: 0755
+  when: ansible_os_family == 'Debian'
+
+- name: add content to kubernetes.list file
+  blockinfile:
+    path: /etc/apt/sources.list.d/kubernetes.list
+    marker: "<!-- {mark} ANSIBLE GENRATED kubernetes repo details file -->"
+    content: |
+      deb https://apt.kubernetes.io/ kubernetes-{{ ansible_distribution_release | lower }} main
+  when: ansible_os_family == 'Debian'
+
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: True
+  when: ansible_os_family == 'Debian'
 
 - name: ensure a list of kubernetes packages installed
   yum:
@@ -33,12 +92,29 @@
     - vim-enhanced
     - wget
     - libselinux-python
+    - net-tools
+    - telnet
+  when: ansible_os_family == 'RedHat'
+
+- name: Install kubernetes packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  become: True
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - docker.io
+  when: ansible_os_family == 'Debian'
+
 
 - meta: clear_host_errors
 
 - name: Disable selinux
   selinux: state=disabled
   changed_when: False
+  when: ansible_os_family == 'RedHat'
 
 - name: disable SELinux
   command: setenforce 0
@@ -46,6 +122,7 @@
   register: disable_selinux
   failed_when:
     - disable_selinux.rc != 0
+  when: ansible_os_family == 'RedHat'
 
 - name: Gather facts
   setup:
@@ -79,3 +156,4 @@
   with_items:
     - docker
     - kubelet
+  when: ansible_os_family == 'RedHat'
