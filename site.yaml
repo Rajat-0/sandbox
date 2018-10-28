@@ -28,6 +28,7 @@
 
 - name: include_vars
   hosts: all
+  strategy: free
   tasks:
     - name: include_vars
       include_vars:
@@ -38,6 +39,7 @@
 - name: Apply  kubernetes-common role for common tasks
   gather_facts: true
   become: True
+  strategy: free
   hosts:
     - kubernetes
   roles:
@@ -77,6 +79,7 @@
 - name: install IoTGEs
   gather_facts: true
   become: True
+  strategy: free
   hosts:
     - master
   roles:
