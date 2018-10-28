@@ -56,6 +56,7 @@
 
 - set_fact:
     admin_token: "{{ admindetails.stdout_lines | last }}"
+  changed_when: True
 
 #- name:  list kube svc and grep dashboard svc
 #  command:  kubectl describe  svc kubernetes-dashboard --namespace kube-system
@@ -76,6 +77,7 @@
     state: touch
     mode: 0755
   register: dashboard_rc
+  changed_when: True
 
 - name: fill user dashboard details to a text file.
   blockinfile:
@@ -92,11 +94,13 @@
       ---------------------------
       ---------------------------
   register: dashboard_details_to_file
+  changed_when: True
 
 - fetch:
     src: /tmp/dashboard_rc.txt
     dest: ./dashboard_rc.txt
     flat: true
+  changed_when: True
 
 
 
