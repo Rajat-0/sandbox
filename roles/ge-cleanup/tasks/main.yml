@@ -1,0 +1,4 @@
+---
+# tasks file for ge-cleanup
+
+- include: clean.yaml

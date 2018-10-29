@@ -1,0 +1,27 @@
+---
+- name: include_vars
+  hosts: localhost
+  tasks:
+    - name: include_vars
+      include_vars:
+        file: cleanup-config.yaml
+        name: clean
+      changed_when: True
+
+- name: include_vars
+  hosts: all
+  strategy: free
+  tasks:
+    - name: include_vars
+      include_vars:
+        file: cleanup-config.yaml
+        name: clean
+      changed_when: True
+
+- name: clean environment
+  gather_facts: true
+  hosts: ges
+  roles:
+    - role: ge-cleanup
+      when:
+        - clean.cleanup | bool

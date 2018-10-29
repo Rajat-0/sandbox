@@ -1,0 +1,12 @@
+#key_name: yadav2
+#key_path: /root/yadav/yadav.pem
+username: "centos"
+cleanup: "yes"                            # yes / no
+clean_orion: "no"                          # yes / no
+
+clean_cepheus: "no"                        # yes / no
+clean_cygnus_sth: "no"                     # yes / no
+clean_sth_comet: "no"                      # yes / no
+clean_cygnus_ckan: "no"                    # yes / no
+clean_ckan: "no"                           # yes / no
+clean_fogflow: "yes"                        # yes / no
