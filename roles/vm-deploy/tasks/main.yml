@@ -15,26 +15,19 @@
   register: openstackfip
 
 - name: Wait for SSH on the Instance
-  command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
-    centos@{{item.floating_ip.floating_ip_address}} true
+  shell: |
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }} centos@{{item.floating_ip.floating_ip_address}} true
+    if [ $? -eq 0 ]
+    then
+        echo
+    else
+        ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }} ubuntu@{{item.floating_ip.floating_ip_address}} true
+    fi
   with_items: "{{ openstackfip.results }}"
   register: result
   until: result|success
   retries: 100
   delay: 2
-  when: ansible_os_family == 'RedHat'
-
-- name: Wait for SSH on the Instance
-  command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
-    ubuntu@{{item.floating_ip.floating_ip_address}} true
-  with_items: "{{ openstackfip.results }}"
-  register: result
-  until: result|success
-  retries: 100
-  delay: 2
-  when: ansible_os_family == 'Debian'
 
 - include: vm_create.yaml
 
@@ -95,18 +88,6 @@
     - stuff.openstack.count == 1
     - ansible_os_family == 'RedHat'
 
-- name: Wait for SSH on the Instance
-  command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
-    centos@{{groups['kubernetes'][-1]}} true
-  register: result
-  until: result|success
-  retries: 100
-  delay: 3
-  when:
-    - ansible_os_family == 'RedHat'
-
-
 - name: add_host to run time inventory for master group
   add_host: name={{ item.server.public_v4 }}
             groups=master
@@ -166,15 +147,4 @@
   with_items: "{{ openstackvmcreate.results }}"
   when:
     - stuff.openstack.count == 1
-    - ansible_os_family == 'Debian'
-
-- name: Wait for SSH on the Instance
-  command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
-    ubuntu@{{groups['kubernetes'][-1]}} true
-  register: result
-  until: result|success
-  retries: 100
-  delay: 3
-  when:
     - ansible_os_family == 'Debian'
