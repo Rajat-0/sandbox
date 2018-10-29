@@ -78,6 +78,10 @@
   register: remove_taint
   failed_when:
     - remove_taint.rc != 0
+  when:
+  - "' Ready' not in before_existing_nodes.stdout"
+  - "'NotReady' not in before_existing_nodes.stdout"
+
 
 - name:  kubeadm join output
   command: kubeadm token create --print-join-command
