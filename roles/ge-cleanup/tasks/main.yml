@@ -1,24 +1,5 @@
 ---
 # tasks file for ge-cleanup
 
-- name: add_host to run time inventory for tobecleaned group
-  add_host: name={{ clean.tobecleaned.master_ip }}
-            groups=tobecleaned
-            ansible_ssh_user=centos
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ clean.tobecleaned.key_path}}
-  when:
-    - clean.tobecleaned.base_distro == 'centos'
-
-- name: add_host to run time inventory for tobecleaned group
-  add_host: name={{ clean.tobecleaned.master_ip }}
-            groups=tobecleaned
-            ansible_ssh_user=ubuntu
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ clean.tobecleaned.key_path}}
-  when:
-    - clean.tobecleaned.base_distro == 'ubuntu'
 
 - include: clean.yaml
