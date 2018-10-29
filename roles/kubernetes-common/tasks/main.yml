@@ -13,7 +13,7 @@
   changed_when: False
   when: ansible_os_family == 'RedHat'
 
-- name: Grant centos user passwordless sudo
+- name: Grant ubuntu user passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
