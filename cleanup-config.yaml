@@ -1,6 +1,10 @@
 #key_name: yadav2
 #key_path: /root/yadav/yadav.pem
-username: "centos"
+tobecleaned:
+  master_ip: 192.168.20.77
+  base_distro: centos
+  key_path: /root/yadav/yadav.pem
+
 cleanup: "yes"                            # yes / no
 clean_orion: "no"                          # yes / no
 
