@@ -11,4 +11,4 @@ $5: latitude value for location, may range between -90 to +90
 $6: longitude value for location, may range between -180 to +180
 
 Sample Request:
-./ff_pullution_update.sh <IP> '"City001"' 46 69 -69.445 38.228
+/tmp/IotGEs/fogflow/fogflow_usecases/fogfunction/ff_pullution_update.sh <IP> '"City001"' 46 69 -69.445 38.228
