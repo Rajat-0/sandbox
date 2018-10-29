@@ -24,7 +24,7 @@
     - nfs-server
   when: ansible_os_family == 'RedHat'
 
-  - name: restart and enable nfs-kernel-server services
+- name: restart and enable nfs-kernel-server services
   systemd:
     name: "{{ item }}"
     state: restarted
