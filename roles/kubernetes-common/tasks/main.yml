@@ -1,8 +1,4 @@
 ---
-
-- name: Clear gathered facts from all currently targeted hosts
-  meta: clear_facts
-
 - name: Grant centos user passwordless sudo
   lineinfile:
     dest: /etc/sudoers
