@@ -14,6 +14,25 @@
     chdir: /tmp/IotGEs/ckan
   changed_when: True
 
+- name: restart and enable nfs-server services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - rpcbind
+    - nfs-server
+  when: ansible_os_family == 'RedHat'
+
+  - name: restart and enable nfs-kernel-server services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - nfs-kernel-server
+  when: ansible_os_family == 'Debian'
+
 - name: copying prodution.ini file with owner and permissions
   copy:
     src: ./IoTGEs-templates/ckan/production.ini

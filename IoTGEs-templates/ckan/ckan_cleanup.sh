@@ -14,4 +14,5 @@ kubectl delete   -f ./volume2.yaml
 kubectl delete   -f ./volume3.yaml
 rm -rvf /ckan/pgdata/*
 rm -rvf /ckan/ckanconfig/*
+rm -rvf /ckan/db/*
 echo "++++++++++ckan oneclick ckan cleanup completed+++++++++++"

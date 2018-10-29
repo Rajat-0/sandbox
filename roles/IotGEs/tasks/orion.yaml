@@ -33,6 +33,25 @@
     chdir: /tmp/IotGEs/orion
   changed_when: True
 
+- name: restart and enable nfs-server services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - rpcbind
+    - nfs-server
+  when: ansible_os_family == 'RedHat'
+
+  - name: restart and enable nfs-kernel-server services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - nfs-kernel-server
+  when: ansible_os_family == 'Debian'
+
 - name: add IP of master to externalIPs
   lineinfile:
     path: /tmp/IotGEs/orion/kube_svc_orion.yaml

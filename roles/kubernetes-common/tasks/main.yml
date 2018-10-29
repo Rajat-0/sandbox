@@ -1,8 +1,4 @@
 ---
-#- include_vars:
-#    file: cloud-config.yaml
-#    name: stuff
-
 - name: Grant centos user passwordless sudo
   lineinfile:
     dest: /etc/sudoers
@@ -52,6 +48,7 @@
     - vim
     - net-tools
     - telnet
+    - nfs-kernel-server
   when: ansible_os_family == 'Debian'
 
 - name: Add an Apt signing key for kubernetes packages, uses whichever key is at the URL
@@ -94,6 +91,8 @@
     - libselinux-python
     - net-tools
     - telnet
+    - nfs-utils
+    - rpcbind
   when: ansible_os_family == 'RedHat'
 
 - name: Install kubernetes packages
