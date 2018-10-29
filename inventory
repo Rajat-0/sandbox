@@ -1,9 +1,0 @@
-[ges:vars]
-#ansible_ssh_user=clean.username
-ansible_ssh_user=centos
-ansible_ssh_private_key_file=/root/yadav/yadav.pem
-ansible_become=true
-ansible_become_user=root
-
-[ges]
-192.168.20.77
