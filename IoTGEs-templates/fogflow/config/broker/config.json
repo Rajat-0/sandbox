@@ -1,7 +1,7 @@
 {
     "discovery_port": 32073,
     "broker_port": 30389,
-    "master_agent_port": 32287,
+    "master_agent_port": 30749,
     "rabbitmq_port": 31227,
     "physical_location":{
         "longitude": 139.709059,
