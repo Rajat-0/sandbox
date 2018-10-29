@@ -12,7 +12,25 @@
   hosts: localhost
   tasks:
     - name: add_host to run time inventory for centos user
+      add_host: name={{ clean.tobecleaned.master_ip }}
+                groups=tobecleaned
+                ansible_ssh_user=centos
+                ansible_become=True
+                ansible_become_user=root
+                ansible_private_key_file={{ clean.tobecleaned.key_path}}
+      when:
+        - clean.tobecleaned.base_distro == 'centos'
+
     - name: add_host to run time inventory for ubuntu user
+      add_host: name={{ clean.tobecleaned.master_ip }}
+                groups=tobecleaned
+                ansible_ssh_user=ubuntu
+                ansible_become=True
+                ansible_become_user=root
+                ansible_python_interpreter: /usr/bin/python3
+                ansible_private_key_file={{ clean.tobecleaned.key_path}}
+      when:
+        - clean.tobecleaned.base_distro == 'ubuntu'
 
 - name: include_vars
   hosts: all
@@ -23,26 +41,6 @@
         file: cleanup-config.yaml
         name: clean
       changed_when: True
-
-- name: add_host to run time inventory for centos user
-  add_host: name={{ clean.tobecleaned.master_ip }}
-            groups=tobecleaned
-            ansible_ssh_user=centos
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ clean.tobecleaned.key_path}}
-  when:
-    - clean.tobecleaned.base_distro == 'centos'
-
-- name: add_host to run time inventory for ubuntu user
-  add_host: name={{ clean.tobecleaned.master_ip }}
-            groups=tobecleaned
-            ansible_ssh_user=ubuntu
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ clean.tobecleaned.key_path}}
-  when:
-    - clean.tobecleaned.base_distro == 'ubuntu'
 
 - name: clean environment
   gather_facts: true
