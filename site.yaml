@@ -39,7 +39,15 @@
 - name: Apply kubernetes-common role for common tasks
   gather_facts: true
   become: True
-  strategy: free
+  hosts:
+    - kubernetes
+  tasks:
+    - name: Clear gathered facts from all currently targeted hosts
+      meta: clear_facts
+
+- name: Apply kubernetes-common role for common tasks
+  gather_facts: true
+  become: True
   hosts:
     - kubernetes
   roles:
