@@ -35,6 +35,7 @@
   failed_when:
     - create_admin_account.rc != 0
   changed_when: False
+  ignore_errors: yes
 
 - name: copying admin-secret.sh
   copy:
