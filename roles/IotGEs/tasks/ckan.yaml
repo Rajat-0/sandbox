@@ -167,18 +167,18 @@
       kubectl exec -it {{ ckan_pod_name }} bash --tty=false  <<'EOF'
       /usr/local/bin/ckan-paster --plugin=ckan sysadmin add ckanuser   --config=/etc/ckan/production.ini
       EOF
-# - name:  run /tmp/dbperm.sh shell script to set db permissions
-#   command: /bin/bash /tmp/dbperm.sh
-#   register: dbperm2
+- name:  run /tmp/dbperm.sh shell script to set db permissions
+  command: /bin/bash /tmp/dbperm.sh
+  register: dbperm2
   
-# - name:  run /tmp/ckanuser.sh shell script to set ckan user permissions
-#   command: /bin/bash /tmp/ckanuser.sh
-#   register: ckanusersh
+- name:  run /tmp/ckanuser.sh shell script to set ckan user permissions
+  command: /bin/bash /tmp/ckanuser.sh
+  register: ckanusersh
   
   
-# - name:  run /tmp/ckanuser1.sh shell script to set systemadmin role permissions
-#   command: /bin/bash /tmp/ckanuser1.sh
-#   register: ckanuser1sh
+- name:  run /tmp/ckanuser1.sh shell script to set systemadmin role permissions
+  command: /bin/bash /tmp/ckanuser1.sh
+  register: ckanuser1sh
 
 - debug:
     msg: "ckan is running on     http://{{groups['master'][0]}}:5000            "
