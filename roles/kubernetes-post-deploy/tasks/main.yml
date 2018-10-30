@@ -35,8 +35,6 @@
   failed_when:
     - create_admin_account.rc != 0
   changed_when: False
-  when:
-  - copy_user_role_yaml.changed
 
 - name: copying admin-secret.sh
   copy:
