@@ -1,0 +1,37 @@
+Variables summary:
+./exampleScript.sh $1 $2 $3 $4 $5
+
+########################### st_requirement_update.sh ###########################
+
+$1: fogflow broker_ip
+$2: entity_id of type "Requirement", for example: Requirement.001
+$3: centerLatitude, may range between -90 to +90
+$4: centerLongitude, may range between -180 to +180
+$5: radius to define area corresponding to the center point defined by centerLatitude and centerLongitude
+
+Sample Request:
+/tmp/IotGEs/fogflow/fogflow_usecases/topology/TemperatureCheck/st_requirement_update.sh <IP> '"Requirement.001"' 52 67 2000
+
+
+########################### st_temperature_update.sh ###########################
+
+$1: fogflow broker_ip
+$2: entity_id for stream of type "Temperature", for example: Stream.Temperature.001
+$3: contextValue for attribute "currentTemperature", it must be a float value.
+$4: contextValue for attribute "deviceId" of type string, for example: device001
+$5: contextValue for metadata "floor" of type string, for example: floor001
+$6: latitude value for metadata "location", may range between -90 to +90
+$7: longitude value for metadata "location", may range between -180 to +180
+
+Sample Request:
+/tmp/IotGEs/fogflow/fogflow_usecases/topology/TemperatureCheck/st_temperature_update.sh <IP> '"Stream.Temperature.001"' 57.45 '"device001"' '"floor001"' 52 67
+
+
+############################## st_rule_update.sh ###############################
+
+$1: fogflow broker_ip
+$2: entity_id for stream of type "Rule", for example: Stream.Rule.01
+$3: contextValue for attribute "threshold", it must be an integer.
+
+Sample Request:
+/tmp/IotGEs/fogflow/fogflow_usecases/topology/TemperatureCheck/st_rule_update.sh <IP> '"Stream.Rule.01"' 55
