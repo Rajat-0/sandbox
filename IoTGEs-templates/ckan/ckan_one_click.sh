@@ -20,5 +20,5 @@ sleep 80
 kubectl create  -f ./ckan-service.yaml
 kubectl create -f ./ckan-deployment.yaml
 
-sleep 100
+sleep 140
 echo "++++++++++ckan oneclick soln completed+++++++++++"
