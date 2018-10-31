@@ -2,7 +2,8 @@
 ########
 # This file includes all the user input variables. Provide the requirements here and then start the environment deployment.
 ---
-base_distro: "centos"       # Valid options are ['centos', 'ubuntu']
+base_distro: "ubuntu"       # Valid options are ['centos', 'ubuntu']
+base_cloud: "aws"           # Valid options are [ 'aws' , 'openstack' ]
 
 openstack:                      # openstack group
   vm_name_prefix: yadav         # prefix of VM name here (1,2,3... will be added to this based on count)
@@ -15,8 +16,19 @@ openstack:                      # openstack group
   key_path: /root/yadav/yadav.pem       # path to security key file
   count: 3                              # number of VMs required
 
+AWS:
+  Name: yadavaws
+  count: 2
+  key_name: sandbox_aws
+  instance_type: t2.micro
+  image: ami-0e32ec5bc225539f5
+  security_group: default
+  vpc_subnet_id: subnet-0ba79351
+  key_path: /home/necuser/Downloads/sandbox_aws.pem 
+
+
 kubernetes:                       # If using NGB only than set ' enable_kubernetes: "no" '.For all other GE's set it "yes".
-  enable_kubernetes: "no"         # yes / no
+  enable_kubernetes: "yes"         # yes / no
   flannel_cidr: 10.244.0.0/16     # default address, do not change it until your VM Network CIDR conflit with it.
 
 enable_IotGEs: "no"                         # yes / no, it will 

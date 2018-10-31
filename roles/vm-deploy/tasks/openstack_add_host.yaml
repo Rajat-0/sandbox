@@ -1,0 +1,117 @@
+- name: add_host to run time inventory for master group
+  add_host: name={{ item.server.public_v4 }}
+            groups=master
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=centos
+            ansible_become=True
+            ansible_become_user=root
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results[:1] }}"
+  when:
+    - stuff.openstack.count > 1
+    - stuff.base_distro == 'centos'
+
+- name: add_host to run time inventory for kubernetes group
+  add_host: name={{ item.server.public_v4 }}
+            groups=kubernetes
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=centos
+            ansible_become=True
+            ansible_become_user=root
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results }}"
+  when:
+    - stuff.openstack.count > 1
+    - stuff.base_distro == 'centos'
+
+
+- name: add_host to run time inventory for worker group
+  add_host: name={{ item.server.public_v4 }}
+            groups=worker
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=centos
+            ansible_become=True
+            ansible_become_user=root
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results[1:] }}"
+  when:
+    - stuff.openstack.count > 1
+    - stuff.base_distro == 'centos'
+
+
+- name: if count is 1 than add that host to all groups
+  add_host:
+    name: "{{ item.server.public_v4 }}"
+    groups:
+      - kubernetes
+      - master
+    instance_name: "{{ item.server.name }}"
+    ansible_ssh_user: centos
+    ansible_become: True
+    ansible_become_user: root
+    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
+  with_items: "{{ openstackvmcreate.results }}"
+  when:
+    - stuff.openstack.count == 1
+    - stuff.base_distro == 'centos'
+
+- name: add_host to run time inventory for master group
+  add_host: name={{ item.server.public_v4 }}
+            groups=master
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=ubuntu
+            ansible_become=True
+            ansible_become_user=root
+            ansible_python_interpreter=/usr/bin/python3
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results[:1] }}"
+  when:
+    - stuff.openstack.count > 1
+    - stuff.base_distro == 'ubuntu'
+
+- name: add_host to run time inventory for kubernetes group
+  add_host: name={{ item.server.public_v4 }}
+            groups=kubernetes
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=ubuntu
+            ansible_become=True
+            ansible_become_user=root
+            ansible_python_interpreter=/usr/bin/python3
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results }}"
+  when:
+    - stuff.openstack.count > 1
+    - stuff.base_distro == 'ubuntu'
+
+
+- name: add_host to run time inventory for worker group
+  add_host: name={{ item.server.public_v4 }}
+            groups=worker
+            instance_name={{ item.server.name }}
+            ansible_ssh_user=ubuntu
+            ansible_become=True
+            ansible_become_user=root
+            ansible_python_interpreter=/usr/bin/python3
+            ansible_private_key_file={{ stuff.openstack.key_path}}
+  with_items: "{{ openstackvmcreate.results[1:] }}"
+  when:
+    - stuff.openstack.count > 1
+    - stuff.base_distro == 'ubuntu'
+
+
+- name: if count is 1 than add that host to all groups
+  add_host:
+    name: "{{ item.server.public_v4 }}"
+    groups:
+      - kubernetes
+      - master
+    instance_name: "{{ item.server.name }}"
+    ansible_ssh_user: ubuntu
+    ansible_become: True
+    ansible_become_user: root
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
+  with_items: "{{ openstackvmcreate.results }}"
+  when:
+    - stuff.openstack.count == 1
+    - stuff.base_distro == 'ubuntu'

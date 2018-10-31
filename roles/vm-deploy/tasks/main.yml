@@ -5,7 +5,13 @@
 - name: Refresh inventory to ensure new instaces exist in inventory
   meta: refresh_inventory
 
-- include: vm_create.yaml
+- include: openstack_vm_create.yaml
+  when:
+    - stuff.base_cloud == 'openstack'
+
+- include: aws-vm-create.yaml
+  when:
+    - stuff.base_cloud == 'aws'
 
 - os_floating_ip:
     state: present
@@ -16,6 +22,8 @@
   with_sequence:
     count={{ stuff.openstack.count }}
   register: openstackfip
+  when:
+    - stuff.base_cloud == 'openstack'
 
 - name: Wait for SSH on the Instance
   command: >
@@ -26,7 +34,9 @@
   until: result|success
   retries: 100
   delay: 2
-  when: stuff.base_distro == 'ubuntu'
+  when:
+    - stuff.base_distro == 'ubuntu'
+    - stuff.base_cloud == 'openstack'
 
 - name: Wait for SSH on the Instance
   command: >
@@ -37,131 +47,35 @@
   until: result|success
   retries: 100
   delay: 2
-  when: stuff.base_distro == 'centos'
-
-- include: vm_create.yaml
-
-- name: add_host to run time inventory for master group
-  add_host: name={{ item.server.public_v4 }}
-            groups=master
-            instance_name={{ item.server.name }}
-            ansible_ssh_user=centos
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ stuff.openstack.key_path}}
-  with_items: "{{ openstackvmcreate.results[:1] }}"
   when:
-    - stuff.openstack.count > 1
+    - stuff.base_distro == 'centos'
+    - stuff.base_cloud == 'openstack'
+
+- include: openstack_vm_create.yaml
+  when:
+    - stuff.base_cloud == 'openstack'
+
+- include: openstack_add_host.yaml
+  when:
+    - stuff.base_cloud == 'openstack'
+
+- include: aws-vm-create.yaml
+  when:
+    - stuff.base_cloud == 'aws'
+
+- include: aws_add_host_centos.yaml
+  when:
+    - stuff.base_cloud == 'aws'
     - stuff.base_distro == 'centos'
 
-- name: add_host to run time inventory for kubernetes group
-  add_host: name={{ item.server.public_v4 }}
-            groups=kubernetes
-            instance_name={{ item.server.name }}
-            ansible_ssh_user=centos
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ stuff.openstack.key_path}}
-  with_items: "{{ openstackvmcreate.results }}"
+- include: aws_add_host_ubuntu.yaml
   when:
-    - stuff.openstack.count > 1
-    - stuff.base_distro == 'centos'
-
-
-- name: add_host to run time inventory for worker group
-  add_host: name={{ item.server.public_v4 }}
-            groups=worker
-            instance_name={{ item.server.name }}
-            ansible_ssh_user=centos
-            ansible_become=True
-            ansible_become_user=root
-            ansible_private_key_file={{ stuff.openstack.key_path}}
-  with_items: "{{ openstackvmcreate.results[1:] }}"
-  when:
-    - stuff.openstack.count > 1
-    - stuff.base_distro == 'centos'
-
-
-- name: if count is 1 than add that host to all groups
-  add_host:
-    name: "{{ item.server.public_v4 }}"
-    groups:
-      - kubernetes
-      - master
-    instance_name: "{{ item.server.name }}"
-    ansible_ssh_user: centos
-    ansible_become: True
-    ansible_become_user: root
-    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
-  with_items: "{{ openstackvmcreate.results }}"
-  when:
-    - stuff.openstack.count == 1
-    - stuff.base_distro == 'centos'
-
-- name: add_host to run time inventory for master group
-  add_host: name={{ item.server.public_v4 }}
-            groups=master
-            instance_name={{ item.server.name }}
-            ansible_ssh_user=ubuntu
-            ansible_become=True
-            ansible_become_user=root
-            ansible_python_interpreter=/usr/bin/python3
-            ansible_private_key_file={{ stuff.openstack.key_path}}
-  with_items: "{{ openstackvmcreate.results[:1] }}"
-  when:
-    - stuff.openstack.count > 1
-    - stuff.base_distro == 'ubuntu'
-
-- name: add_host to run time inventory for kubernetes group
-  add_host: name={{ item.server.public_v4 }}
-            groups=kubernetes
-            instance_name={{ item.server.name }}
-            ansible_ssh_user=ubuntu
-            ansible_become=True
-            ansible_become_user=root
-            ansible_python_interpreter=/usr/bin/python3
-            ansible_private_key_file={{ stuff.openstack.key_path}}
-  with_items: "{{ openstackvmcreate.results }}"
-  when:
-    - stuff.openstack.count > 1
-    - stuff.base_distro == 'ubuntu'
-
-
-- name: add_host to run time inventory for worker group
-  add_host: name={{ item.server.public_v4 }}
-            groups=worker
-            instance_name={{ item.server.name }}
-            ansible_ssh_user=ubuntu
-            ansible_become=True
-            ansible_become_user=root
-            ansible_python_interpreter=/usr/bin/python3
-            ansible_private_key_file={{ stuff.openstack.key_path}}
-  with_items: "{{ openstackvmcreate.results[1:] }}"
-  when:
-    - stuff.openstack.count > 1
-    - stuff.base_distro == 'ubuntu'
-
-
-- name: if count is 1 than add that host to all groups
-  add_host:
-    name: "{{ item.server.public_v4 }}"
-    groups:
-      - kubernetes
-      - master
-    instance_name: "{{ item.server.name }}"
-    ansible_ssh_user: ubuntu
-    ansible_become: True
-    ansible_become_user: root
-    ansible_python_interpreter: /usr/bin/python3
-    ansible_private_key_file: "{{ stuff.openstack.key_path}}"
-  with_items: "{{ openstackvmcreate.results }}"
-  when:
-    - stuff.openstack.count == 1
+    - stuff.base_cloud == 'aws'
     - stuff.base_distro == 'ubuntu'
 
 - name: Wait for SSH on the Instance
   command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.AWS.key_path }}
     centos@{{groups['kubernetes'][-1]}} true
   register: result
   until: result|success
@@ -172,7 +86,7 @@
 
 - name: Wait for SSH on the Instance
   command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.AWS.key_path }}
     ubuntu@{{groups['kubernetes'][-1]}} true
   register: result
   until: result|success

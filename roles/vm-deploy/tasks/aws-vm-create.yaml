@@ -1,0 +1,21 @@
+- name: deploy ec2 vms
+  ec2:
+    key_name: "{{ stuff.AWS.key_name}}"
+    instance_type: "{{ stuff.AWS.instance_type }}"
+    image: "{{ stuff.AWS.image }}"
+    wait: yes
+    group: "{{ stuff.AWS.security_group }}"
+    exact_count: 2
+    vpc_subnet_id: "{{stuff.AWS.vpc_subnet_id}}"
+    assign_public_ip: yes
+    count_tag:
+      Name: "{{stuff.AWS.Name}}"
+  register: ec2_vms
+
+- debug:
+    msg: "{{ ec2_vms }}"
+  changed_when: False
+
+- name: Wait for system to become reachable over WinRM
+  wait_for_connection:
+    timeout: 900
