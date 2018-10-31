@@ -2,7 +2,7 @@ echo ">> Update request for Temperature of a floor <<"
 
 read -a VAR1 -p "master-ip: "
 
-read -a VAR2 -p "entity_id for type Temperature (must be of format "Stream.xxxxx"):"
+read -a VAR2 -p "entity_id for type Temperature (must be of format "Stream.Temperaturexxxxx"):"
 
 read -a VAR3 -p "Current Temperature (Integer value): "
 
