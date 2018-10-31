@@ -14,8 +14,8 @@ spec:
   - name: "5432"
     port: 5432
     targetPort: 5432
-    nodePort: 30760
   selector:
     io.kompose.service: postgis
+  externalIPs:
 status:
   loadBalancer: {}

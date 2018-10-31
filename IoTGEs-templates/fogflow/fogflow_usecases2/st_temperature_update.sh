@@ -22,4 +22,4 @@ read -a VAR7 -p "longitude: "
 echo var7=$VAR7
 
 
-curl -iX POST 'http://'$VAR1':30389/ngsi10/updateContext' -H 'Content-Type: application/json' -d '{"contextElements": [{"entityId": {"id": '$VAR2', "type": "Temperature", "isPattern": false}, "attributes": [{"name": "currentTemperature", "type": "float", "contextValue": '$VAR3'}, {"name": "deviceId", "type": "string", "contextValue": '$VAR4'}], "domainMetadata": [{"name": "floor", "type": "string", "value": '$VAR5'}, {"name": "location", "type": "point", "value": {"latitude": '$VAR6', "longitude": '$VAR7'}}]}], "updateAction": "UPDATE"}'
+curl -iX POST 'http://'$VAR1':8082/ngsi10/updateContext' -H 'Content-Type: application/json' -d '{"contextElements": [{"entityId": {"id": '$VAR2', "type": "Temperature", "isPattern": false}, "attributes": [{"name": "currentTemperature", "type": "float", "contextValue": '$VAR3'}, {"name": "deviceId", "type": "string", "contextValue": '$VAR4'}], "domainMetadata": [{"name": "floor", "type": "string", "value": '$VAR5'}, {"name": "location", "type": "point", "value": {"latitude": '$VAR6', "longitude": '$VAR7'}}]}], "updateAction": "UPDATE"}'

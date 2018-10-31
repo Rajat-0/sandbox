@@ -12,10 +12,10 @@ spec:
   type: NodePort
   ports:
   - name: "8080"
-    port: 8080
+    port: 8082
     targetPort: 8080
-    nodePort: 30389
   selector:
     io.kompose.service: broker
+  externalIPs:
 status:
   loadBalancer: {}

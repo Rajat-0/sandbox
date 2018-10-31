@@ -9,4 +9,4 @@ echo var2=$VAR2
 read -a VAR3 -p "New Temperature Threshold:"
 echo var3=$VAR3
 
-curl -iX POST 'http://'$VAR1':30389/ngsi10/updateContext' -H 'Content-Type: application/json' -d '{"contextElements": [{"entityId": {"id": '$VAR2', "type": "Rule", "isPattern": false}, "attributes": [{"name": "threshold", "type": "integer", "contextValue": '$VAR3'}]}], "updateAction": "UPDATE"}'
+curl -iX POST 'http://'$VAR1':8082/ngsi10/updateContext' -H 'Content-Type: application/json' -d '{"contextElements": [{"entityId": {"id": '$VAR2', "type": "Rule", "isPattern": false}, "attributes": [{"name": "threshold", "type": "integer", "contextValue": '$VAR3'}]}], "updateAction": "UPDATE"}'

@@ -19,4 +19,4 @@ read -a VAR6 -p "longitude: "
 echo var6=$VAR6
 
 
-curl -iX POST 'http://'$VAR1':30389/ngsi10/updateContext' -H 'Content-Type: application/json' -d '{"contextElements": [{"entityId": {"id": '$VAR2', "type": "City", "isPattern": false}, "attributes": [{"name": "PM10", "type": "integer", "contextValue": '$VAR3'},{"name": "PM25", "type": "integer", "contextValue": '$VAR4'}], "domainMetadata": [{"name": "location", "type": "point", "value": {"latitude": '$VAR5', "longitude": '$VAR6'}}]}],"updateAction": "UPDATE"}'
+curl -iX POST 'http://'$VAR1':8082/ngsi10/updateContext' -H 'Content-Type: application/json' -d '{"contextElements": [{"entityId": {"id": '$VAR2', "type": "City", "isPattern": false}, "attributes": [{"name": "PM10", "type": "integer", "contextValue": '$VAR3'},{"name": "PM25", "type": "integer", "contextValue": '$VAR4'}], "domainMetadata": [{"name": "location", "type": "point", "value": {"latitude": '$VAR5', "longitude": '$VAR6'}}]}],"updateAction": "UPDATE"}'
