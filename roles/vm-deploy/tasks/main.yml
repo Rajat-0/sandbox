@@ -9,10 +9,6 @@
   when:
     - stuff.base_cloud == 'openstack'
 
-- include: aws-vm-create.yaml
-  when:
-    - stuff.base_cloud == 'aws'
-
 - os_floating_ip:
     state: present
     reuse: yes
