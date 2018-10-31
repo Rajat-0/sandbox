@@ -3,13 +3,6 @@
     "broker_port": 8082,
     "master_agent_port": 1060,
     "rabbitmq_port": 5672,
-    "physical_location":{
-        "longitude": 139.709059,
-        "latitude": 35.692221,
-        "section": "01",
-        "district": "02",
-        "city": "Tokyo"
-    },  
     "logging":{
         "info":"stdout",
         "error":"stderr",

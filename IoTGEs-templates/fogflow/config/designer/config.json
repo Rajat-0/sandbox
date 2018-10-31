@@ -3,7 +3,6 @@
     "broker_port": 8082,
     "master_agent_port": 1060,
     "rabbitmq_port": 5672,
-    "agent_ip": "192.168.20.71",
     "logging":{
         "info":"stdout",
         "error":"stderr",
