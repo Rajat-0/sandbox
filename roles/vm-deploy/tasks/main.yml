@@ -71,7 +71,7 @@
 
 - name: Wait for SSH on the Instance
   command: >
-    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.AWS.key_path }}
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
     centos@{{groups['kubernetes'][-1]}} true
   register: result
   until: result|success
