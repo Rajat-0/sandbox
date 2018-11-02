@@ -79,6 +79,32 @@
   delay: 3
   when:
     - stuff.base_distro == 'centos'
+    - stuff.base_cloud == 'openstack'
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.openstack.key_path }}
+    ubuntu@{{groups['kubernetes'][-1]}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 3
+  when:
+    - stuff.base_distro == 'ubuntu'
+    - stuff.base_cloud == 'openstack'
+
+
+- name: Wait for SSH on the Instance
+  command: >
+    ssh -oBatchMode=yes -oStrictHostKeyChecking=no -i {{ stuff.AWS.key_path }}
+    centos@{{groups['kubernetes'][-1]}} true
+  register: result
+  until: result|success
+  retries: 100
+  delay: 3
+  when:
+    - stuff.base_distro == 'centos'
+    - stuff.base_cloud == 'aws'
 
 - name: Wait for SSH on the Instance
   command: >
@@ -90,3 +116,4 @@
   delay: 3
   when:
     - stuff.base_distro == 'ubuntu'
+    - stuff.base_cloud == 'aws'
