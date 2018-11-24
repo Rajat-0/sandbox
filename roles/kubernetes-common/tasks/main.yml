@@ -137,16 +137,14 @@
   register: etc_hosts_entry
   changed_when: False
 
-- name: Setting sysctl values
-  sysctl:
-    name: {{ item }}
-    value: 1
-    sysctl_set: yes
-    state: present
-    reload: yes
+- name: Add the below entries in the conf file to change the Linux host bridge values.
+  lineinfile:
+    path: /etc/sysctl.conf
+    line: "{{ item }}"
+  register: add_lines_to_sysctl
   with_items:
-    - "net.bridge.bridge-nf-call-iptables"
-    - "net.bridge.bridge-nf-call-ip6tables"
+    - "net.bridge.bridge-nf-call-iptables = 1"
+    - "net.bridge.bridge-nf-call-ip6tables = 1"
   changed_when: False
 
 - name: start and enable kubernetes services
