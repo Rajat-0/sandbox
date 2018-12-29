@@ -124,7 +124,7 @@
 
 - name: Download file kubernetes-dashboard.yaml from kubernetes offical link
   get_url:
-    url: https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+    url: https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
     dest: /tmp/kubernetes-dashboard.yaml
   register: kubernetes_dashboard_yaml
 
