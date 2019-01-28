@@ -3,18 +3,18 @@
 # This file includes all the user input variables. Provide the requirements here and then start the environment deployment.
 ---
 base_distro: "ubuntu"       # Valid options are ['centos', 'ubuntu']
-base_cloud: "aws"           # Valid options are [ 'aws' , 'openstack' ]
+base_cloud: "openstack"           # Valid options are [ 'aws' , 'openstack' ]
 
 openstack:                      # openstack group
-  vm_name_prefix: yadav         # prefix of VM name here (1,2,3... will be added to this based on count)
-  key_name: yadav2              # security key-name same as in openstack
-  flavor: m1.medium             # flavor name for instance as in openstack (Minimum ' m1.small ' is required)
-  private_network: demo-net     # private network name as in openstack
-  external_network: ext-net     # external network name as in openstack
-  image: centos7.5              #supported Images versiona Centos7/ Ubuntu16 (name as your openstack image name)
-  security_groups: sandbox_kube         # name of security group as in openstack
-  key_path: /root/yadav/yadav.pem       # path to security key file
-  count: 3                              # number of VMs required
+  vm_name_prefix: yourvmprefix         # prefix of VM name here (1,2,3... will be added to this based on count)
+  key_name: yourkeyname              # security key-name same as in openstack
+  flavor: yourflavorname             # flavor name for instance as in openstack (Minimum ' m1.small ' is required)
+  private_network: yourprivatenetname     # private network name as in openstack
+  external_network: yourextnetname     # external network name as in openstack
+  image: yourimagename              #supported Images versiona Centos7/ Ubuntu16 (name as your openstack image name)
+  security_groups:  yoursecuritygroupname         # name of security group as in openstack
+  key_path: /tmp/key.pem       # path to security key file
+  count: totalvmcount                              # number of VMs required
 
 AWS:
   Name: yadavaws
