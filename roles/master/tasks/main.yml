@@ -28,9 +28,9 @@
   - "' Ready' not in before_existing_nodes.stdout"
   - "'NotReady' not in before_existing_nodes.stdout"
 
-- debug:
-    msg: "{{ kubeadm_init_output }}"
-  changed_when: False
+#- debug:
+#    msg: "{{ kubeadm_init_output }}"
+#  changed_when: False
 
 - name: create /root/.kube directory
   file:
@@ -67,9 +67,9 @@
     - kube_fannel_setup.rc != 0
 
 
-- debug:
-    msg: "{{ kubeadm_init_output }}"
-  when: inventory_hostname in groups['master']
+#- debug:
+#    msg: "{{ kubeadm_init_output }}"
+#  when: inventory_hostname in groups['master']
 
 - name:  Remove Taint of master node for Scheduling pods on master node when cluster vm count is one
   command: kubectl taint nodes --all node-role.kubernetes.io/master-
@@ -90,10 +90,10 @@
     - kubejointoken.rc != 0
   when: stuff.openstack.count > 1
  
-- debug:
-    msg: "{{ kubejointoken }}"
-  when:
-  - stuff.openstack.count > 1
+#- debug:
+#    msg: "{{ kubejointoken }}"
+#  when:
+#  - stuff.openstack.count > 1
 
 - name: create mydata file
   file:
