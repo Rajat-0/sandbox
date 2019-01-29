@@ -4,9 +4,9 @@
   command: kubectl get pods --all-namespaces
   register: kubectlgetpods
 
-- debug:
-    msg: "{{ kubectlgetpods }}"
-  changed_when: False
+#- debug:
+#    msg: "{{ kubectlgetpods }}"
+#  changed_when: False
 
 - name:  list kubernetes nodes
   command: kubectl get nodes
@@ -15,8 +15,8 @@
   retries: 100
   delay: 3
 
-- debug:
-    msg: "{{ kubectlnodes1 }}"
+#- debug:
+#    msg: "{{ kubectlnodes1 }}"
 
 - name: copying  admin-service-account.yaml
   copy:
@@ -100,8 +100,3 @@
     dest: ./dashboard_rc.txt
     flat: true
   changed_when: True
-
-
-
-
-
