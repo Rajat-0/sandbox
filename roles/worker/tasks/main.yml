@@ -23,5 +23,5 @@
   when:
   - last_worker_hostname  not in before_existing_nodes_stdout
 
-- debug:
-    msg: "{{ kubejointoken1 }}"
+#- debug:
+#    msg: "{{ kubejointoken1 }}"
